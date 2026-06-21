@@ -1,0 +1,24 @@
+import SectionHeading from "./SectionHeading";
+import SocialIcons from "./SocialIcons";
+
+export default function Contact() {
+  return (
+    <section id="contact" className="scroll-mt-24 lg:scroll-mt-0">
+      <SectionHeading number="03" title="Contact" />
+      <div className="max-w-xl">
+        <p className="mb-8 text-base leading-relaxed text-muted sm:text-lg">
+          I&apos;m always open to talking about software, data, or new
+          opportunities. Whether you have a question or just want to say hi,
+          my inbox is open.
+        </p>
+        <a
+          href="mailto:ew8414@princeton.edu"
+          className="inline-flex items-center rounded-md border border-accent px-8 py-4 font-mono text-sm tracking-wide text-accent transition-all duration-200 hover:bg-accent/10 hover:shadow-[0_0_20px_rgba(94,234,212,0.15)]"
+        >
+          Say Hello
+        </a>
+        <SocialIcons className="mt-10" />
+      </div>
+    </section>
+  );
+}
