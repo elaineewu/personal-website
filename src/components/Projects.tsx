@@ -90,7 +90,7 @@ export default function Projects() {
   return (
     <section id="projects" className="scroll-mt-24 lg:scroll-mt-0">
       <RevealOnScroll>
-        <SectionHeading number="02" title="Projects" />
+        <SectionHeading number="03" title="Projects" />
       </RevealOnScroll>
       <ul className="flex flex-col gap-2">
         {projects.map((project, index) => {

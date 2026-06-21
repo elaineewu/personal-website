@@ -1,5 +1,6 @@
 import Sidebar from "@/components/Sidebar";
 import About from "@/components/About";
+import Experience from "@/components/Experience";
 import Projects from "@/components/Projects";
 import Contact from "@/components/Contact";
 
@@ -11,6 +12,7 @@ export default function Home() {
       <main className="px-6 pb-24 pt-24 lg:ml-[min(40vw,320px)] lg:px-12 lg:py-16 xl:px-24">
         <div className="mx-auto flex max-w-3xl flex-col gap-24 lg:gap-32">
           <About />
+          <Experience />
           <Projects />
           <Contact />
         </div>
