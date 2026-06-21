@@ -1,3 +1,4 @@
+import { Calculator, TrendingUp, type LucideIcon } from "lucide-react";
 import Link from "next/link";
 import RevealOnScroll from "./RevealOnScroll";
 import SectionHeading from "./SectionHeading";
@@ -6,6 +7,7 @@ type Project = {
   title: string;
   description: string;
   tags: string[];
+  icon: LucideIcon;
   href?: string;
   github?: string;
 };
@@ -16,6 +18,7 @@ const projects: Project[] = [
     description:
       "Interactive calculator that prices European call and put options using the Black-Scholes model, with live updates for delta, gamma, theta, and vega as inputs change.",
     tags: ["TypeScript", "Next.js", "Quantitative Finance"],
+    icon: Calculator,
     href: "/projects/options-calculator",
     github: "https://github.com/elaineewu/options-calculator",
   },
@@ -24,6 +27,7 @@ const projects: Project[] = [
     description:
       "Backtest a moving average crossover strategy on NVIDIA and SPY historical data, comparing strategy returns against buy-and-hold and visualizing portfolio growth over time.",
     tags: ["TypeScript", "Next.js", "Trading Strategy", "Backtesting"],
+    icon: TrendingUp,
     href: "/projects/ma-backtester",
     github: "https://github.com/elaineewu/ma-backtester",
   },
@@ -96,69 +100,88 @@ export default function Projects() {
         {projects.map((project, index) => {
           const isExternal = project.href?.startsWith("http") ?? false;
 
+          const cardContent = (
+            <div className="flex items-start justify-between gap-4">
+              <div className="min-w-0 flex-1">
+                <h3 className="mb-2 flex items-center gap-2.5 text-lg font-medium text-foreground transition-colors group-hover:text-accent sm:text-xl">
+                  <project.icon
+                    className="h-6 w-6 shrink-0 text-accent"
+                    strokeWidth={1.5}
+                    aria-hidden="true"
+                  />
+                  {project.title}
+                </h3>
+                <p className="mb-4 max-w-2xl text-sm leading-relaxed text-muted sm:text-base">
+                  {project.description}
+                </p>
+                <ul className="flex flex-wrap gap-2">
+                  {project.tags.map((tag) => (
+                    <li
+                      key={tag}
+                      className="rounded-full border border-border bg-background/50 px-3 py-1 font-mono text-xs text-muted"
+                    >
+                      {tag}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              {(project.href || project.github) && (
+                <div
+                  className="mt-1 w-[4.5rem] shrink-0"
+                  aria-hidden="true"
+                />
+              )}
+            </div>
+          );
+
           return (
             <li key={project.title}>
               <RevealOnScroll delay={index * 120}>
-                <article className="group relative -mx-4 rounded-lg px-4 py-5 transition-all duration-200 hover:bg-surface sm:-mx-6 sm:px-6">
-                  <div className="flex items-start justify-between gap-4">
-                    <div className="min-w-0 flex-1">
-                      <h3 className="mb-2 text-lg font-medium text-foreground transition-colors group-hover:text-accent sm:text-xl">
-                        {project.href && !isExternal ? (
-                          <Link href={project.href}>{project.title}</Link>
-                        ) : (
-                          project.title
-                        )}
-                      </h3>
-                      <p className="mb-4 max-w-2xl text-sm leading-relaxed text-muted sm:text-base">
-                        {project.description}
-                      </p>
-                      <ul className="flex flex-wrap gap-2">
-                        {project.tags.map((tag) => (
-                          <li
-                            key={tag}
-                            className="rounded-full border border-border bg-background/50 px-3 py-1 font-mono text-xs text-muted"
-                          >
-                            {tag}
-                          </li>
-                        ))}
-                      </ul>
+                <article className="group relative -mx-4 rounded-lg transition-all duration-200 hover:bg-surface sm:-mx-6">
+                  {project.href && !isExternal ? (
+                    <Link
+                      href={project.href}
+                      className="block rounded-lg px-4 py-5 sm:px-6"
+                      aria-label={`View ${project.title}`}
+                    >
+                      {cardContent}
+                    </Link>
+                  ) : (
+                    <div className="rounded-lg px-4 py-5 sm:px-6">
+                      {cardContent}
                     </div>
-                    {(project.href || project.github) && (
-                      <div className="mt-1 flex shrink-0 items-center gap-3 opacity-0 transition-all duration-200 group-hover:opacity-100">
-                        {project.github && (
+                  )}
+                  {(project.href || project.github) && (
+                    <div className="pointer-events-none absolute right-4 top-5 flex items-center gap-3 opacity-0 transition-all duration-200 group-hover:opacity-100 sm:right-6">
+                      {project.github && (
+                        <a
+                          href={project.github}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          aria-label={`View ${project.title} on GitHub (opens in new tab)`}
+                          className="pointer-events-auto relative z-10 text-muted transition-colors hover:text-accent"
+                        >
+                          <GitHubIcon />
+                        </a>
+                      )}
+                      {project.href &&
+                        (isExternal ? (
                           <a
-                            href={project.github}
+                            href={project.href}
                             target="_blank"
                             rel="noopener noreferrer"
-                            aria-label={`View ${project.title} on GitHub (opens in new tab)`}
-                            className="text-muted transition-colors hover:text-accent"
+                            aria-label={`View ${project.title} (opens in new tab)`}
+                            className="pointer-events-auto relative z-10 text-muted transition-colors hover:text-accent"
                           >
-                            <GitHubIcon />
+                            <ExternalLinkIcon />
                           </a>
-                        )}
-                        {project.href &&
-                          (isExternal ? (
-                            <a
-                              href={project.href}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              aria-label={`View ${project.title} (opens in new tab)`}
-                              className="text-muted transition-colors hover:text-accent"
-                            >
-                              <ExternalLinkIcon />
-                            </a>
-                          ) : (
-                            <Link
-                              href={project.href}
-                              aria-label={`View ${project.title}`}
-                              className="text-muted transition-colors hover:text-accent"
-                            >
-                              <InternalLinkIcon />
-                            </Link>
-                          ))}
-                      </div>
-                    )}
-                  </div>
+                        ) : (
+                          <span className="text-muted" aria-hidden="true">
+                            <InternalLinkIcon />
+                          </span>
+                        ))}
+                    </div>
+                  )}
                   <div
                     className="pointer-events-none absolute inset-0 rounded-lg border border-transparent transition-colors duration-200 group-hover:border-accent/20"
                     aria-hidden="true"
