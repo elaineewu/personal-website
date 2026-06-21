@@ -1,4 +1,5 @@
 import Link from "next/link";
+import RevealOnScroll from "./RevealOnScroll";
 import SectionHeading from "./SectionHeading";
 
 type Project = {
@@ -21,7 +22,7 @@ const projects: Project[] = [
   {
     title: "Moving Average Crossover Backtester",
     description:
-      "Backtest a moving average crossover strategy on historical daily prices, compare portfolio growth against buy-and-hold, and visualize results over time.",
+      "Backtest a moving average crossover strategy on NVIDIA and SPY historical data, comparing strategy returns against buy-and-hold and visualizing portfolio growth over time.",
     tags: ["TypeScript", "Next.js", "Trading Strategy", "Backtesting"],
     href: "/projects/ma-backtester",
     github: "https://github.com/elaineewu/ma-backtester",
@@ -88,78 +89,82 @@ function GitHubIcon() {
 export default function Projects() {
   return (
     <section id="projects" className="scroll-mt-24 lg:scroll-mt-0">
-      <SectionHeading number="02" title="Projects" />
+      <RevealOnScroll>
+        <SectionHeading number="02" title="Projects" />
+      </RevealOnScroll>
       <ul className="flex flex-col gap-2">
-        {projects.map((project) => {
+        {projects.map((project, index) => {
           const isExternal = project.href?.startsWith("http") ?? false;
 
           return (
             <li key={project.title}>
-              <article className="group relative -mx-4 rounded-lg px-4 py-5 transition-all duration-200 hover:bg-surface sm:-mx-6 sm:px-6">
-                <div className="flex items-start justify-between gap-4">
-                  <div className="min-w-0 flex-1">
-                    <h3 className="mb-2 text-lg font-medium text-foreground transition-colors group-hover:text-accent sm:text-xl">
-                      {project.href && !isExternal ? (
-                        <Link href={project.href}>{project.title}</Link>
-                      ) : (
-                        project.title
-                      )}
-                    </h3>
-                    <p className="mb-4 max-w-2xl text-sm leading-relaxed text-muted sm:text-base">
-                      {project.description}
-                    </p>
-                    <ul className="flex flex-wrap gap-2">
-                      {project.tags.map((tag) => (
-                        <li
-                          key={tag}
-                          className="rounded-full border border-border bg-background/50 px-3 py-1 font-mono text-xs text-muted"
-                        >
-                          {tag}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                  {(project.href || project.github) && (
-                    <div className="mt-1 flex shrink-0 items-center gap-3 opacity-0 transition-all duration-200 group-hover:opacity-100">
-                      {project.github && (
-                        <a
-                          href={project.github}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          aria-label={`View ${project.title} on GitHub (opens in new tab)`}
-                          className="text-muted transition-colors hover:text-accent"
-                        >
-                          <GitHubIcon />
-                        </a>
-                      )}
-                      {project.href &&
-                        (isExternal ? (
+              <RevealOnScroll delay={index * 120}>
+                <article className="group relative -mx-4 rounded-lg px-4 py-5 transition-all duration-200 hover:bg-surface sm:-mx-6 sm:px-6">
+                  <div className="flex items-start justify-between gap-4">
+                    <div className="min-w-0 flex-1">
+                      <h3 className="mb-2 text-lg font-medium text-foreground transition-colors group-hover:text-accent sm:text-xl">
+                        {project.href && !isExternal ? (
+                          <Link href={project.href}>{project.title}</Link>
+                        ) : (
+                          project.title
+                        )}
+                      </h3>
+                      <p className="mb-4 max-w-2xl text-sm leading-relaxed text-muted sm:text-base">
+                        {project.description}
+                      </p>
+                      <ul className="flex flex-wrap gap-2">
+                        {project.tags.map((tag) => (
+                          <li
+                            key={tag}
+                            className="rounded-full border border-border bg-background/50 px-3 py-1 font-mono text-xs text-muted"
+                          >
+                            {tag}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                    {(project.href || project.github) && (
+                      <div className="mt-1 flex shrink-0 items-center gap-3 opacity-0 transition-all duration-200 group-hover:opacity-100">
+                        {project.github && (
                           <a
-                            href={project.href}
+                            href={project.github}
                             target="_blank"
                             rel="noopener noreferrer"
-                            aria-label={`View ${project.title} (opens in new tab)`}
+                            aria-label={`View ${project.title} on GitHub (opens in new tab)`}
                             className="text-muted transition-colors hover:text-accent"
                           >
-                            <ExternalLinkIcon />
+                            <GitHubIcon />
                           </a>
-                        ) : (
-                          <Link
-                            href={project.href}
-                            aria-label={`View ${project.title}`}
-                            className="text-muted transition-colors hover:text-accent"
-                          >
-                            <InternalLinkIcon />
-                          </Link>
-                        ))}
-                    </div>
-                  )}
-                </div>
-                <div
-                  className="pointer-events-none absolute inset-0 rounded-lg border border-transparent transition-colors duration-200 group-hover:border-accent/20"
-                  aria-hidden="true"
-                />
-              </article>
+                        )}
+                        {project.href &&
+                          (isExternal ? (
+                            <a
+                              href={project.href}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              aria-label={`View ${project.title} (opens in new tab)`}
+                              className="text-muted transition-colors hover:text-accent"
+                            >
+                              <ExternalLinkIcon />
+                            </a>
+                          ) : (
+                            <Link
+                              href={project.href}
+                              aria-label={`View ${project.title}`}
+                              className="text-muted transition-colors hover:text-accent"
+                            >
+                              <InternalLinkIcon />
+                            </Link>
+                          ))}
+                      </div>
+                    )}
+                  </div>
+                  <div
+                    className="pointer-events-none absolute inset-0 rounded-lg border border-transparent transition-colors duration-200 group-hover:border-accent/20"
+                    aria-hidden="true"
+                  />
+                </article>
+              </RevealOnScroll>
             </li>
           );
         })}

@@ -2,6 +2,10 @@
 
 import { useState } from "react";
 import SocialIcons from "./SocialIcons";
+import TypewriterTagline from "./TypewriterTagline";
+
+const TAGLINE =
+  "Quant finance, data analysis, and the code behind both.";
 
 const navItems = [
   { label: "About", href: "#about" },
@@ -70,9 +74,7 @@ export default function Sidebar() {
           >
             Elaine Wu
           </a>
-          <p className="mt-4 max-w-[240px] text-base leading-relaxed text-muted">
-            I build software and turn data into decisions.
-          </p>
+          <TypewriterTagline text={TAGLINE} />
 
           <nav className="mt-12" aria-label="Main navigation">
             <ul className="flex flex-col gap-3">
