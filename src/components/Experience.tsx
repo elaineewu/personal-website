@@ -107,11 +107,12 @@ export default function Experience() {
     window.addEventListener("resize", updateTimeline);
 
     const timeline = timelineRef.current;
-    const resizeObserver =
-      timeline && typeof ResizeObserver !== "undefined"
-        ? new ResizeObserver(updateTimeline)
-        : null;
-    resizeObserver?.observe(timeline);
+    let resizeObserver: ResizeObserver | null = null;
+
+    if (timeline && typeof ResizeObserver !== "undefined") {
+      resizeObserver = new ResizeObserver(updateTimeline);
+      resizeObserver.observe(timeline);
+    }
 
     return () => {
       window.removeEventListener("scroll", updateTimeline);
