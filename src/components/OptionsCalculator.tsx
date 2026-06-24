@@ -1,7 +1,24 @@
 "use client";
 
-import { useMemo, useState } from "react";
-import { blackScholes, type OptionType } from "@/lib/black-scholes";
+import { useDeferredValue, useMemo, useState } from "react";
+import {
+  Bar,
+  BarChart,
+  CartesianGrid,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "recharts";
+import { blackScholes, type BlackScholesInputs, type OptionType } from "@/lib/black-scholes";
+import {
+  MAX_MONTE_CARLO_SIMULATIONS,
+  MIN_MONTE_CARLO_SIMULATIONS,
+  monteCarloFromPrices,
+  simulateFinalPrices,
+  simulationCountFromSlider,
+  sliderPositionFromSimulationCount,
+} from "@/lib/monte-carlo-options";
 
 type NumericField =
   | "stockPrice"
@@ -38,6 +55,40 @@ function formatGreek(value: number, decimals = 4): string {
     minimumFractionDigits: decimals,
     maximumFractionDigits: decimals,
   });
+}
+
+function formatPercentDifference(mcPrice: number, bsPrice: number): string {
+  if (bsPrice === 0) {
+    return mcPrice === 0 ? "0.00%" : "—";
+  }
+  const diff = ((mcPrice - bsPrice) / bsPrice) * 100;
+  const sign = diff >= 0 ? "+" : "";
+  return `${sign}${diff.toFixed(2)}%`;
+}
+
+function formatSimulationCount(count: number): string {
+  return count.toLocaleString("en-US");
+}
+
+type HistogramTooltipProps = {
+  active?: boolean;
+  payload?: Array<{ payload: { binStart: number; binEnd: number; count: number } }>;
+};
+
+function HistogramTooltip({ active, payload }: HistogramTooltipProps) {
+  if (!active || !payload?.length) {
+    return null;
+  }
+
+  const { binStart, binEnd, count } = payload[0].payload;
+  return (
+    <div className="rounded-lg border border-border bg-surface px-3 py-2 font-mono text-xs text-foreground shadow-lg">
+      <p className="text-muted">
+        {formatCurrency(binStart)} – {formatCurrency(binEnd)}
+      </p>
+      <p className="mt-1 text-accent">{count.toLocaleString("en-US")} paths</p>
+    </div>
+  );
 }
 
 function FieldLabel({
@@ -129,6 +180,8 @@ export default function OptionsCalculator() {
   const [riskFreeRate, setRiskFreeRate] = useState(defaults.riskFreeRate);
   const [volatility, setVolatility] = useState(defaults.volatility);
   const [optionType, setOptionType] = useState<OptionType>(defaults.optionType);
+  const [simulationCount, setSimulationCount] = useState(10_000);
+  const deferredSimulationCount = useDeferredValue(simulationCount);
 
   const setters: Record<NumericField, (value: string) => void> = {
     stockPrice: setStockPrice,
@@ -146,16 +199,39 @@ export default function OptionsCalculator() {
     volatility,
   };
 
-  const result = useMemo(() => {
-    return blackScholes({
+  const inputs: BlackScholesInputs = useMemo(
+    () => ({
       S: parsePositive(stockPrice),
       K: parsePositive(strikePrice),
       T: parsePositive(timeToExpiry),
       r: parsePositive(riskFreeRate) / 100,
       sigma: parsePositive(volatility) / 100,
       type: optionType,
-    });
-  }, [stockPrice, strikePrice, timeToExpiry, riskFreeRate, volatility, optionType]);
+    }),
+    [stockPrice, strikePrice, timeToExpiry, riskFreeRate, volatility, optionType],
+  );
+
+  const result = useMemo(() => blackScholes(inputs), [inputs]);
+
+  const allFinalPrices = useMemo(
+    () => simulateFinalPrices(inputs, MAX_MONTE_CARLO_SIMULATIONS),
+    [inputs],
+  );
+
+  const activeFinalPrices = useMemo(
+    () => allFinalPrices.slice(0, deferredSimulationCount),
+    [allFinalPrices, deferredSimulationCount],
+  );
+
+  const monteCarloResult = useMemo(
+    () => monteCarloFromPrices(inputs, activeFinalPrices),
+    [inputs, activeFinalPrices],
+  );
+
+  const percentDifference = formatPercentDifference(
+    monteCarloResult.price,
+    result.price,
+  );
 
   return (
     <div className="flex flex-col gap-12">
@@ -300,6 +376,138 @@ export default function OptionsCalculator() {
         </div>
       </div>
 
+      <section className="rounded-xl border border-border bg-surface p-6 sm:p-8">
+        <h2 className="mb-2 font-mono text-sm uppercase tracking-widest text-accent">
+          Monte Carlo Verification
+        </h2>
+        <p className="mb-6 text-xs text-muted">
+          Independent pricing via simulated stock paths · updates live
+        </p>
+
+        <div className="mb-8 grid gap-4 sm:grid-cols-3">
+          <div className="rounded-lg border border-accent/20 bg-background/60 px-5 py-4">
+            <p className="mb-1 text-xs uppercase tracking-wide text-muted">
+              Black-Scholes price
+            </p>
+            <p className="font-mono text-2xl font-medium tabular-nums text-accent">
+              {formatCurrency(result.price)}
+            </p>
+          </div>
+          <div className="rounded-lg border border-border bg-background/60 px-5 py-4">
+            <p className="mb-1 text-xs uppercase tracking-wide text-muted">
+              Monte Carlo price ({formatSimulationCount(deferredSimulationCount)}{" "}
+              simulations)
+            </p>
+            <p className="font-mono text-2xl font-medium tabular-nums text-foreground">
+              {formatCurrency(monteCarloResult.price)}
+            </p>
+          </div>
+          <div className="rounded-lg border border-border bg-background/60 px-5 py-4">
+            <p className="mb-1 text-xs uppercase tracking-wide text-muted">
+              Difference
+            </p>
+            <p className="font-mono text-2xl font-medium tabular-nums text-foreground">
+              {percentDifference}
+            </p>
+            <p className="mt-1 text-xs text-muted">MC vs. Black-Scholes</p>
+          </div>
+        </div>
+
+        <div className="mb-8">
+          <div className="mb-3 flex flex-wrap items-end justify-between gap-3">
+            <label htmlFor="simulationCount" className="block">
+              <span className="mb-1.5 block text-sm text-foreground">
+                Number of simulations
+              </span>
+              <span className="font-mono text-xs text-muted">
+                Log scale · {formatSimulationCount(simulationCount)} paths
+              </span>
+            </label>
+            <input
+              id="simulationCount"
+              type="number"
+              inputMode="numeric"
+              min={MIN_MONTE_CARLO_SIMULATIONS}
+              max={MAX_MONTE_CARLO_SIMULATIONS}
+              value={simulationCount}
+              onChange={(event) => {
+                const parsed = parseInt(event.target.value, 10);
+                if (Number.isFinite(parsed)) {
+                  setSimulationCount(
+                    Math.min(
+                      MAX_MONTE_CARLO_SIMULATIONS,
+                      Math.max(MIN_MONTE_CARLO_SIMULATIONS, parsed),
+                    ),
+                  );
+                }
+              }}
+              className="w-32 rounded-lg border border-border bg-background px-3 py-2 font-mono text-sm text-foreground outline-none transition-colors focus:border-accent/50 focus:ring-1 focus:ring-accent/30"
+            />
+          </div>
+          <input
+            type="range"
+            min={0}
+            max={1}
+            step={0.001}
+            value={sliderPositionFromSimulationCount(simulationCount)}
+            onChange={(event) =>
+              setSimulationCount(
+                simulationCountFromSlider(parseFloat(event.target.value)),
+              )
+            }
+            className="h-2 w-full cursor-pointer appearance-none rounded-full bg-border accent-accent"
+            aria-label="Simulation count slider"
+          />
+          <div className="mt-2 flex justify-between font-mono text-[11px] text-muted">
+            <span>{formatSimulationCount(MIN_MONTE_CARLO_SIMULATIONS)}</span>
+            <span>{formatSimulationCount(MAX_MONTE_CARLO_SIMULATIONS)}</span>
+          </div>
+        </div>
+
+        <div>
+          <h3 className="mb-4 font-mono text-xs uppercase tracking-widest text-muted">
+            Distribution of simulated final stock prices (S<sub>T</sub>)
+          </h3>
+          <div className="h-64 w-full sm:h-72">
+            {monteCarloResult.histogram.length > 0 ? (
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart
+                  data={monteCarloResult.histogram}
+                  margin={{ top: 8, right: 8, left: 0, bottom: 0 }}
+                >
+                  <CartesianGrid stroke="#2d3748" strokeDasharray="3 3" vertical={false} />
+                  <XAxis
+                    dataKey="label"
+                    tick={{ fill: "#94a3b8", fontSize: 11, fontFamily: "monospace" }}
+                    tickLine={false}
+                    axisLine={{ stroke: "#2d3748" }}
+                    minTickGap={24}
+                  />
+                  <YAxis
+                    tick={{ fill: "#94a3b8", fontSize: 11, fontFamily: "monospace" }}
+                    tickLine={false}
+                    axisLine={{ stroke: "#2d3748" }}
+                    width={40}
+                    allowDecimals={false}
+                  />
+                  <Tooltip content={<HistogramTooltip />} />
+                  <Bar
+                    dataKey="count"
+                    fill="#5eead4"
+                    fillOpacity={0.75}
+                    radius={[2, 2, 0, 0]}
+                  />
+                </BarChart>
+              </ResponsiveContainer>
+            ) : (
+              <div className="flex h-full items-center justify-center rounded-lg border border-dashed border-border bg-background/40 px-6 text-center text-sm text-muted">
+                Enter valid inputs to simulate stock price paths at expiry.
+              </div>
+            )}
+          </div>
+        </div>
+      </section>
+
       <section className="max-w-3xl space-y-4 text-sm leading-relaxed text-muted">
         <p>
           The Black-Scholes model estimates the fair value of a European option
@@ -312,6 +520,19 @@ export default function OptionsCalculator() {
           in the underlying inputs: delta tracks stock price moves, gamma captures
           how quickly delta itself changes, theta reflects time decay, and vega
           shows sensitivity to shifts in implied volatility.
+        </p>
+        <p>
+          Monte Carlo simulation offers an independent check on the analytical
+          formula. Each path draws a random shock from a standard normal
+          distribution (via the Box-Muller transform) and evolves the stock under
+          geometric Brownian motion to a final price S<sub>T</sub>. The option
+          payoff on each path is averaged and discounted back to today. By the law
+          of large numbers, this sample mean converges to the true expected payoff
+          as the number of simulations grows — which is exactly the quantity
+          Black-Scholes computes in closed form. Watching the Monte Carlo estimate
+          tighten toward the analytical price as you increase the simulation count
+          is a practical confirmation that both methods are pricing the same
+          contract under the same assumptions.
         </p>
         <p className="rounded-lg border border-border bg-surface/50 px-4 py-3 font-mono text-xs leading-relaxed">
           Disclaimer: This calculator is for educational purposes only. Actual

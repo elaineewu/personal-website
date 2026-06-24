@@ -3,7 +3,7 @@ import Link from "next/link";
 import OptionsCalculator from "@/components/OptionsCalculator";
 
 export const metadata: Metadata = {
-  title: "Black-Scholes Options Calculator | Elaine Wu",
+  title: "Black-Scholes vs. Monte Carlo: Options Calculator | Elaine Wu",
   description:
     "Interactive Black-Scholes options pricing calculator with live Greeks.",
 };
@@ -23,7 +23,7 @@ export default function OptionsCalculatorPage() {
         <header className="mb-12">
           <p className="mb-3 font-mono text-sm text-accent">Quantitative Finance</p>
           <h1 className="text-3xl font-medium tracking-tight text-foreground sm:text-4xl">
-            Black-Scholes Options Calculator
+            Black-Scholes vs. Monte Carlo: Options Calculator
           </h1>
           <p className="mt-4 max-w-2xl text-base leading-relaxed text-muted">
             Price European call and put options and explore their Greeks in

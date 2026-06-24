@@ -14,7 +14,7 @@ type Project = {
 
 const projects: Project[] = [
   {
-    title: "Black-Scholes Options Calculator",
+    title: "Black-Scholes vs. Monte Carlo: Options Calculator",
     description:
       "Interactive calculator that prices European call and put options using the Black-Scholes model, with live updates for delta, gamma, theta, and vega as inputs change.",
     tags: ["TypeScript", "Next.js", "Quantitative Finance"],
