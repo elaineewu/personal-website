@@ -1,4 +1,4 @@
-import { BookOpen, FileText, type LucideIcon } from "lucide-react";
+import { BookOpen, type LucideIcon } from "lucide-react";
 import RevealOnScroll from "./RevealOnScroll";
 import SectionHeading from "./SectionHeading";
 
@@ -15,7 +15,7 @@ const papers: ResearchPaper[] = [
       "Statistical Identification of a Distance Metric that Maximizes Interrater Reliability",
     description:
       "Evaluated Euclidean, Canberra, and Manhattan distance metrics in R to measure inter-rater reliability between coders of qualitative classroom observation data at Honors Summer Math Camp at Mathworks.",
-    icon: FileText,
+    icon: BookOpen,
     href: "/papers/distance-metrics.pdf",
   },
   {
