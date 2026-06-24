@@ -1,8 +1,14 @@
 "use client";
 
-import { useLayoutEffect, useRef, useState } from "react";
+import { FileText } from "lucide-react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import RevealOnScroll from "./RevealOnScroll";
 import SectionHeading from "./SectionHeading";
+
+type PaperLink = {
+  title: string;
+  href: string;
+};
 
 type ExperienceEntry = {
   id: string;
@@ -11,6 +17,7 @@ type ExperienceEntry = {
   dates: string;
   description: string;
   swapHierarchy?: boolean;
+  papers?: PaperLink[];
 };
 
 const experiences: ExperienceEntry[] = [
@@ -46,8 +53,88 @@ const experiences: ExperienceEntry[] = [
     dates: "Summers 2021–2024",
     description:
       "Researched statistical distance metrics and constrained spectral clustering in R, Python, and MATLAB, improving predictive accuracy to 89% and cutting algorithm runtime by 22%. Presented technical findings to non-technical audiences at annual symposiums.",
+    papers: [
+      {
+        title:
+          "Statistical Identification of a Distance Metric that Maximizes Interrater Reliability",
+        href: "/papers/distance-metrics.pdf",
+      },
+      {
+        title: "Implementing Fairness Constraints in Spectral Clustering",
+        href: "/papers/spectral-clustering-fairness.pdf",
+      },
+    ],
   },
 ];
+
+function ExperiencePaperMenu({ papers }: { papers: PaperLink[] }) {
+  const [open, setOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!open) return;
+
+    const handlePointerDown = (event: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setOpen(false);
+      }
+    };
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handlePointerDown);
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.removeEventListener("mousedown", handlePointerDown);
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [open]);
+
+  return (
+    <div ref={menuRef} className="relative sm:ml-auto">
+      <button
+        type="button"
+        onClick={() => setOpen((prev) => !prev)}
+        aria-expanded={open}
+        aria-haspopup="menu"
+        aria-label="View papers"
+        className="inline-flex items-center gap-1 text-muted transition-colors hover:text-accent"
+      >
+        <FileText
+          className="h-3.5 w-3.5"
+          strokeWidth={1.5}
+          aria-hidden="true"
+        />
+        <span className="font-mono text-xs">View Papers</span>
+      </button>
+      {open && (
+        <div
+          role="menu"
+          className="absolute right-0 top-full z-20 mt-2 w-[min(22rem,calc(100vw-3rem))] rounded-lg border border-border bg-surface py-1 shadow-[0_8px_24px_rgba(0,0,0,0.4)]"
+        >
+          {papers.map((paper) => (
+            <a
+              key={paper.href}
+              role="menuitem"
+              href={paper.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => setOpen(false)}
+              className="block px-3 py-2.5 text-left text-xs leading-snug text-muted transition-colors hover:bg-accent/10 hover:text-accent sm:text-sm"
+            >
+              {paper.title}
+            </a>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
 
 export default function Experience() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -170,6 +257,9 @@ export default function Experience() {
                     <span className="font-mono text-xs tracking-wide text-accent sm:text-sm">
                       {entry.dates}
                     </span>
+                    {entry.papers && (
+                      <ExperiencePaperMenu papers={entry.papers} />
+                    )}
                   </div>
                   <p className="mb-2 font-mono text-sm text-muted">
                     {entry.swapHierarchy ? entry.title : entry.organization}

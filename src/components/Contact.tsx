@@ -6,7 +6,7 @@ export default function Contact() {
   return (
     <section id="contact" className="scroll-mt-24 lg:scroll-mt-0">
       <RevealOnScroll>
-        <SectionHeading number="04" title="Contact" />
+        <SectionHeading number="05" title="Contact" />
         <div className="max-w-xl">
           <p className="mb-8 text-base leading-relaxed text-muted sm:text-lg">
             I&apos;m always open to talking about software, data, or new
