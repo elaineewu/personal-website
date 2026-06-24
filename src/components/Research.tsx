@@ -58,13 +58,13 @@ export default function Research() {
           const cardContent = (
             <div className="flex items-start justify-between gap-4">
               <div className="min-w-0 flex-1">
-                <h3 className="mb-2 flex flex-wrap items-center gap-2.5 text-lg font-medium text-foreground transition-colors group-hover:text-accent sm:text-xl">
+                <h3 className="mb-2 flex items-start gap-2.5 text-lg font-medium text-foreground transition-colors group-hover:text-accent sm:text-xl">
                   <paper.icon
                     className="h-6 w-6 shrink-0 text-accent"
                     strokeWidth={1.5}
                     aria-hidden="true"
                   />
-                  <span>{paper.title}</span>
+                  <span className="min-w-0">{paper.title}</span>
                   <span className="rounded-full border border-border bg-background/50 px-2 py-0.5 font-mono text-[10px] font-normal text-muted sm:text-xs">
                     v1 / Preliminary
                   </span>
