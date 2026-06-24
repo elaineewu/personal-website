@@ -1,4 +1,4 @@
-import { Calculator, TrendingUp, type LucideIcon } from "lucide-react";
+import { Calculator, Spade, TrendingUp, type LucideIcon } from "lucide-react";
 import Link from "next/link";
 import RevealOnScroll from "./RevealOnScroll";
 import SectionHeading from "./SectionHeading";
@@ -30,6 +30,14 @@ const projects: Project[] = [
     icon: TrendingUp,
     href: "/projects/ma-backtester",
     github: "https://github.com/elaineewu/ma-backtester",
+  },
+  {
+    title: "GTO Poker Range Calculator",
+    description:
+      "Visualize Nash equilibrium push/fold ranges at short stack depths and explore the expected value reasoning behind each shove-or-fold decision.",
+    tags: ["Game Theory", "Probability", "TypeScript", "Monte Carlo Simulation"],
+    icon: Spade,
+    href: "/projects/gto-poker-calculator",
   },
 ];
 
