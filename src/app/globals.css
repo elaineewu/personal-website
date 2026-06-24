@@ -34,3 +34,61 @@ body {
   background-color: color-mix(in srgb, var(--accent) 25%, transparent);
   color: var(--foreground);
 }
+
+@keyframes walk-cat-across {
+  0% {
+    transform: translateX(-96px);
+    opacity: 0;
+  }
+
+  4% {
+    opacity: 1;
+  }
+
+  38% {
+    transform: translateX(calc(50vw - 36px));
+  }
+
+  52% {
+    transform: translateX(calc(50vw - 36px));
+  }
+
+  92% {
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateX(calc(100vw + 16px));
+    opacity: 0;
+  }
+}
+
+@keyframes walk-cat-bob {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  25% {
+    transform: translateY(-4px);
+  }
+
+  50% {
+    transform: translateY(0);
+  }
+
+  75% {
+    transform: translateY(-4px);
+  }
+}
+
+.walk-cat-traveler {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  animation: walk-cat-across 4.8s ease-in-out forwards;
+}
+
+.walk-cat-bob {
+  animation: walk-cat-bob 0.45s ease-in-out infinite;
+}

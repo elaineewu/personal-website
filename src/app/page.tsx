@@ -3,6 +3,7 @@ import About from "@/components/About";
 import Experience from "@/components/Experience";
 import Projects from "@/components/Projects";
 import Contact from "@/components/Contact";
+import Footer from "@/components/Footer";
 
 export default function Home() {
   return (
@@ -17,12 +18,7 @@ export default function Home() {
           <Contact />
         </div>
 
-        <footer className="mx-auto mt-32 max-w-3xl border-t border-border pt-8 font-mono text-xs text-muted">
-          <p>
-            Built by Elaine Wu &middot;{" "}
-            <span className="text-accent">2026</span>
-          </p>
-        </footer>
+        <Footer />
       </main>
     </div>
   );
