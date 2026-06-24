@@ -9,7 +9,7 @@ export default function Contact() {
         <SectionHeading number="05" title="Contact" />
         <div className="max-w-xl">
           <p className="mb-8 text-base leading-relaxed text-muted sm:text-lg">
-            High EV decision: say hi.
+            High EV decision:
           </p>
           <a
             href="mailto:ew8414@princeton.edu"
