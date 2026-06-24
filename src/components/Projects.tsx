@@ -38,6 +38,7 @@ const projects: Project[] = [
     tags: ["Game Theory", "Probability", "TypeScript", "Monte Carlo Simulation"],
     icon: Spade,
     href: "/projects/gto-poker-calculator",
+    github: "https://github.com/elaineewu/gto-poker-calculator",
   },
 ];
 
