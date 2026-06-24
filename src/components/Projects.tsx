@@ -16,7 +16,7 @@ const projects: Project[] = [
   {
     title: "Black-Scholes vs. Monte Carlo: Options Calculator",
     description:
-      "Interactive calculator that prices European call and put options using the Black-Scholes model, with live updates for delta, gamma, theta, and vega as inputs change.",
+      "Price European call and put options using the Black-Scholes model, and verify the result with a Monte Carlo simulation.",
     tags: ["TypeScript", "Next.js", "Quantitative Finance"],
     icon: Calculator,
     href: "/projects/options-calculator",

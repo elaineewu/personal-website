@@ -5,7 +5,7 @@ import OptionsCalculator from "@/components/OptionsCalculator";
 export const metadata: Metadata = {
   title: "Black-Scholes vs. Monte Carlo: Options Calculator | Elaine Wu",
   description:
-    "Interactive Black-Scholes options pricing calculator with live Greeks.",
+    "Price European options with Black-Scholes and verify results via Monte Carlo simulation.",
 };
 
 export default function OptionsCalculatorPage() {
@@ -26,8 +26,8 @@ export default function OptionsCalculatorPage() {
             Black-Scholes vs. Monte Carlo: Options Calculator
           </h1>
           <p className="mt-4 max-w-2xl text-base leading-relaxed text-muted">
-            Price European call and put options and explore their Greeks in
-            real time using the classic Black-Scholes model.
+            Price European call and put options using the Black-Scholes model,
+            and verify the result with a Monte Carlo simulation.
           </p>
         </header>
 

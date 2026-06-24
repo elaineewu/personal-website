@@ -146,6 +146,13 @@ function NumberInput({
   );
 }
 
+type CalculationTab = "black-scholes" | "monte-carlo";
+
+const tabLabels: Record<CalculationTab, string> = {
+  "black-scholes": "Black-Scholes",
+  "monte-carlo": "Monte Carlo",
+};
+
 function GreekRow({
   name,
   symbol,
@@ -181,6 +188,7 @@ export default function OptionsCalculator() {
   const [volatility, setVolatility] = useState(defaults.volatility);
   const [optionType, setOptionType] = useState<OptionType>(defaults.optionType);
   const [simulationCount, setSimulationCount] = useState(10_000);
+  const [activeTab, setActiveTab] = useState<CalculationTab>("black-scholes");
   const deferredSimulationCount = useDeferredValue(simulationCount);
 
   const setters: Record<NumericField, (value: string) => void> = {
@@ -234,279 +242,314 @@ export default function OptionsCalculator() {
   );
 
   return (
-    <div className="flex flex-col gap-12">
-      <div className="grid gap-8 lg:grid-cols-2 lg:gap-12">
-        <form
-          className="rounded-xl border border-border bg-surface p-6 sm:p-8"
-          onSubmit={(event) => event.preventDefault()}
-        >
-          <h2 className="mb-6 font-mono text-sm uppercase tracking-widest text-accent">
-            Inputs
-          </h2>
-          <div className="flex flex-col gap-5">
-            <div>
-              <FieldLabel htmlFor="stockPrice" label="Stock price" symbol="S" />
-              <NumberInput
-                id="stockPrice"
-                value={values.stockPrice}
-                onChange={setters.stockPrice}
-                step="0.01"
-                min="0"
-              />
-            </div>
-
-            <div>
-              <FieldLabel htmlFor="strikePrice" label="Strike price" symbol="K" />
-              <NumberInput
-                id="strikePrice"
-                value={values.strikePrice}
-                onChange={setters.strikePrice}
-                step="0.01"
-                min="0"
-              />
-            </div>
-
-            <div>
-              <FieldLabel
-                htmlFor="timeToExpiry"
-                label="Time to expiry"
-                symbol="T"
-              />
-              <NumberInput
-                id="timeToExpiry"
-                value={values.timeToExpiry}
-                onChange={setters.timeToExpiry}
-                step="0.01"
-                min="0"
-                suffix="years"
-              />
-            </div>
-
-            <div>
-              <FieldLabel
-                htmlFor="riskFreeRate"
-                label="Risk-free rate"
-                symbol="r"
-              />
-              <NumberInput
-                id="riskFreeRate"
-                value={values.riskFreeRate}
-                onChange={setters.riskFreeRate}
-                step="0.01"
-                min="0"
-                suffix="%"
-              />
-            </div>
-
-            <div>
-              <FieldLabel htmlFor="volatility" label="Volatility" symbol="σ" />
-              <NumberInput
-                id="volatility"
-                value={values.volatility}
-                onChange={setters.volatility}
-                step="0.01"
-                min="0"
-                suffix="%"
-              />
-            </div>
-
-            <div>
-              <FieldLabel htmlFor="optionType" label="Option type" symbol="" />
-              <select
-                id="optionType"
-                value={optionType}
-                onChange={(event) =>
-                  setOptionType(event.target.value as OptionType)
-                }
-                className="w-full rounded-lg border border-border bg-background px-4 py-2.5 text-sm text-foreground outline-none transition-colors focus:border-accent/50 focus:ring-1 focus:ring-accent/30"
-              >
-                <option value="call">Call</option>
-                <option value="put">Put</option>
-              </select>
-            </div>
-          </div>
-        </form>
-
-        <div className="rounded-xl border border-border bg-surface p-6 sm:p-8">
-          <h2 className="mb-2 font-mono text-sm uppercase tracking-widest text-accent">
-            Results
-          </h2>
-          <p className="mb-6 text-xs text-muted">
-            European {optionType} · updates live
-          </p>
-
-          <div className="mb-8 rounded-lg border border-accent/20 bg-background/60 px-5 py-4">
-            <p className="mb-1 text-xs uppercase tracking-wide text-muted">
-              Theoretical price
-            </p>
-            <p className="font-mono text-3xl font-medium tabular-nums text-accent">
-              {formatCurrency(result.price)}
-            </p>
+    <div className="flex flex-col gap-8">
+      <form
+        className="rounded-xl border border-border bg-surface p-6 sm:p-8"
+        onSubmit={(event) => event.preventDefault()}
+      >
+        <h2 className="mb-6 font-mono text-sm uppercase tracking-widest text-accent">
+          Inputs
+        </h2>
+        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          <div>
+            <FieldLabel htmlFor="stockPrice" label="Stock price" symbol="S" />
+            <NumberInput
+              id="stockPrice"
+              value={values.stockPrice}
+              onChange={setters.stockPrice}
+              step="0.01"
+              min="0"
+            />
           </div>
 
           <div>
-            <h3 className="mb-1 font-mono text-xs uppercase tracking-widest text-muted">
-              Greeks
-            </h3>
-            <GreekRow
-              name="Delta"
-              symbol="Δ"
-              value={formatGreek(result.delta)}
-              description="Price change per $1 move in the stock"
-            />
-            <GreekRow
-              name="Gamma"
-              symbol="Γ"
-              value={formatGreek(result.gamma, 6)}
-              description="Change in delta per $1 move in the stock"
-            />
-            <GreekRow
-              name="Theta"
-              symbol="Θ"
-              value={formatCurrency(result.theta)}
-              description="Estimated daily time decay"
-            />
-            <GreekRow
-              name="Vega"
-              symbol="ν"
-              value={formatCurrency(result.vega)}
-              description="Price change per 1% move in volatility"
+            <FieldLabel htmlFor="strikePrice" label="Strike price" symbol="K" />
+            <NumberInput
+              id="strikePrice"
+              value={values.strikePrice}
+              onChange={setters.strikePrice}
+              step="0.01"
+              min="0"
             />
           </div>
+
+          <div>
+            <FieldLabel
+              htmlFor="timeToExpiry"
+              label="Time to expiry"
+              symbol="T"
+            />
+            <NumberInput
+              id="timeToExpiry"
+              value={values.timeToExpiry}
+              onChange={setters.timeToExpiry}
+              step="0.01"
+              min="0"
+              suffix="years"
+            />
+          </div>
+
+          <div>
+            <FieldLabel
+              htmlFor="riskFreeRate"
+              label="Risk-free rate"
+              symbol="r"
+            />
+            <NumberInput
+              id="riskFreeRate"
+              value={values.riskFreeRate}
+              onChange={setters.riskFreeRate}
+              step="0.01"
+              min="0"
+              suffix="%"
+            />
+          </div>
+
+          <div>
+            <FieldLabel htmlFor="volatility" label="Volatility" symbol="σ" />
+            <NumberInput
+              id="volatility"
+              value={values.volatility}
+              onChange={setters.volatility}
+              step="0.01"
+              min="0"
+              suffix="%"
+            />
+          </div>
+
+          <div>
+            <FieldLabel htmlFor="optionType" label="Option type" symbol="" />
+            <select
+              id="optionType"
+              value={optionType}
+              onChange={(event) =>
+                setOptionType(event.target.value as OptionType)
+              }
+              className="w-full rounded-lg border border-border bg-background px-4 py-2.5 text-sm text-foreground outline-none transition-colors focus:border-accent/50 focus:ring-1 focus:ring-accent/30"
+            >
+              <option value="call">Call</option>
+              <option value="put">Put</option>
+            </select>
+          </div>
+        </div>
+      </form>
+
+      <div className="rounded-xl border border-border bg-surface p-6 sm:p-8">
+        <div
+          role="tablist"
+          aria-label="Pricing method"
+          className="flex gap-6 border-b border-border"
+        >
+          {(Object.keys(tabLabels) as CalculationTab[]).map((tab) => {
+            const isActive = activeTab === tab;
+            return (
+              <button
+                key={tab}
+                type="button"
+                role="tab"
+                id={`tab-${tab}`}
+                aria-selected={isActive}
+                aria-controls={`panel-${tab}`}
+                onClick={() => setActiveTab(tab)}
+                className={`-mb-px border-b-2 px-1 pb-3 font-mono text-sm transition-colors duration-200 ${
+                  isActive
+                    ? "border-accent text-accent"
+                    : "border-transparent text-muted hover:text-foreground"
+                }`}
+              >
+                {tabLabels[tab]}
+              </button>
+            );
+          })}
+        </div>
+
+        <div
+          key={activeTab}
+          role="tabpanel"
+          id={`panel-${activeTab}`}
+          aria-labelledby={`tab-${activeTab}`}
+          className="tab-panel-enter mt-6"
+        >
+          {activeTab === "black-scholes" ? (
+            <>
+              <p className="mb-4 text-xs text-muted">
+                European {optionType} · analytical pricing · updates live
+              </p>
+
+              <div className="mb-6 rounded-lg border border-accent/20 bg-background/60 px-5 py-4">
+                <p className="mb-1 text-xs uppercase tracking-wide text-muted">
+                  Theoretical price
+                </p>
+                <p className="font-mono text-3xl font-medium tabular-nums text-accent">
+                  {formatCurrency(result.price)}
+                </p>
+              </div>
+
+              <div>
+                <h3 className="mb-2 font-mono text-xs uppercase tracking-widest text-muted">
+                  Greeks
+                </h3>
+                <div className="grid gap-x-8 sm:grid-cols-2">
+                  <GreekRow
+                    name="Delta"
+                    symbol="Δ"
+                    value={formatGreek(result.delta)}
+                    description="Price change per $1 move in the stock"
+                  />
+                  <GreekRow
+                    name="Gamma"
+                    symbol="Γ"
+                    value={formatGreek(result.gamma, 6)}
+                    description="Change in delta per $1 move in the stock"
+                  />
+                  <GreekRow
+                    name="Theta"
+                    symbol="Θ"
+                    value={formatCurrency(result.theta)}
+                    description="Estimated daily time decay"
+                  />
+                  <GreekRow
+                    name="Vega"
+                    symbol="ν"
+                    value={formatCurrency(result.vega)}
+                    description="Price change per 1% move in volatility"
+                  />
+                </div>
+              </div>
+            </>
+          ) : (
+            <>
+              <p className="mb-4 text-xs text-muted">
+                European {optionType} · simulated stock paths · updates live
+              </p>
+
+              <div className="mb-5 rounded-lg border border-accent/20 bg-background/60 px-5 py-4">
+                <p className="mb-1 text-xs uppercase tracking-wide text-muted">
+                  Monte Carlo price ({formatSimulationCount(deferredSimulationCount)}{" "}
+                  simulations)
+                </p>
+                <p className="font-mono text-3xl font-medium tabular-nums text-accent">
+                  {formatCurrency(monteCarloResult.price)}
+                </p>
+              </div>
+
+              <div className="mb-5 grid gap-4 sm:grid-cols-2">
+                <div className="rounded-lg border border-border bg-background/60 px-5 py-3">
+                  <p className="mb-1 text-xs uppercase tracking-wide text-muted">
+                    Black-Scholes price
+                  </p>
+                  <p className="font-mono text-xl font-medium tabular-nums text-foreground">
+                    {formatCurrency(result.price)}
+                  </p>
+                </div>
+                <div className="rounded-lg border border-border bg-background/60 px-5 py-3">
+                  <p className="mb-1 text-xs uppercase tracking-wide text-muted">
+                    Difference
+                  </p>
+                  <p className="font-mono text-xl font-medium tabular-nums text-foreground">
+                    {percentDifference}
+                  </p>
+                  <p className="mt-0.5 text-xs text-muted">MC vs. Black-Scholes</p>
+                </div>
+              </div>
+
+              <div className="mb-5">
+                <div className="mb-3 flex flex-wrap items-end justify-between gap-3">
+                  <label htmlFor="simulationCount" className="block">
+                    <span className="mb-1.5 block text-sm text-foreground">
+                      Number of simulations
+                    </span>
+                    <span className="font-mono text-xs text-muted">
+                      Log scale · {formatSimulationCount(simulationCount)} paths
+                    </span>
+                  </label>
+                  <input
+                    id="simulationCount"
+                    type="number"
+                    inputMode="numeric"
+                    min={MIN_MONTE_CARLO_SIMULATIONS}
+                    max={MAX_MONTE_CARLO_SIMULATIONS}
+                    value={simulationCount}
+                    onChange={(event) => {
+                      const parsed = parseInt(event.target.value, 10);
+                      if (Number.isFinite(parsed)) {
+                        setSimulationCount(
+                          Math.min(
+                            MAX_MONTE_CARLO_SIMULATIONS,
+                            Math.max(MIN_MONTE_CARLO_SIMULATIONS, parsed),
+                          ),
+                        );
+                      }
+                    }}
+                    className="w-32 rounded-lg border border-border bg-background px-3 py-2 font-mono text-sm text-foreground outline-none transition-colors focus:border-accent/50 focus:ring-1 focus:ring-accent/30"
+                  />
+                </div>
+                <input
+                  type="range"
+                  min={0}
+                  max={1}
+                  step={0.001}
+                  value={sliderPositionFromSimulationCount(simulationCount)}
+                  onChange={(event) =>
+                    setSimulationCount(
+                      simulationCountFromSlider(parseFloat(event.target.value)),
+                    )
+                  }
+                  className="h-2 w-full cursor-pointer appearance-none rounded-full bg-border accent-accent"
+                  aria-label="Simulation count slider"
+                />
+                <div className="mt-2 flex justify-between font-mono text-[11px] text-muted">
+                  <span>{formatSimulationCount(MIN_MONTE_CARLO_SIMULATIONS)}</span>
+                  <span>{formatSimulationCount(MAX_MONTE_CARLO_SIMULATIONS)}</span>
+                </div>
+              </div>
+
+              <div>
+                <h3 className="mb-3 font-mono text-xs uppercase tracking-widest text-muted">
+                  Distribution of simulated final stock prices (S<sub>T</sub>)
+                </h3>
+                <div className="h-48 w-full sm:h-56">
+                  {monteCarloResult.histogram.length > 0 ? (
+                    <ResponsiveContainer width="100%" height="100%">
+                      <BarChart
+                        data={monteCarloResult.histogram}
+                        margin={{ top: 8, right: 8, left: 0, bottom: 0 }}
+                      >
+                        <CartesianGrid stroke="#2d3748" strokeDasharray="3 3" vertical={false} />
+                        <XAxis
+                          dataKey="label"
+                          tick={{ fill: "#94a3b8", fontSize: 11, fontFamily: "monospace" }}
+                          tickLine={false}
+                          axisLine={{ stroke: "#2d3748" }}
+                          minTickGap={24}
+                        />
+                        <YAxis
+                          tick={{ fill: "#94a3b8", fontSize: 11, fontFamily: "monospace" }}
+                          tickLine={false}
+                          axisLine={{ stroke: "#2d3748" }}
+                          width={40}
+                          allowDecimals={false}
+                        />
+                        <Tooltip content={<HistogramTooltip />} />
+                        <Bar
+                          dataKey="count"
+                          fill="#5eead4"
+                          fillOpacity={0.75}
+                          radius={[2, 2, 0, 0]}
+                        />
+                      </BarChart>
+                    </ResponsiveContainer>
+                  ) : (
+                    <div className="flex h-full items-center justify-center rounded-lg border border-dashed border-border bg-background/40 px-6 text-center text-sm text-muted">
+                      Enter valid inputs to simulate stock price paths at expiry.
+                    </div>
+                  )}
+                </div>
+              </div>
+            </>
+          )}
         </div>
       </div>
-
-      <section className="rounded-xl border border-border bg-surface p-6 sm:p-8">
-        <h2 className="mb-2 font-mono text-sm uppercase tracking-widest text-accent">
-          Monte Carlo Verification
-        </h2>
-        <p className="mb-6 text-xs text-muted">
-          Independent pricing via simulated stock paths · updates live
-        </p>
-
-        <div className="mb-8 grid gap-4 sm:grid-cols-3">
-          <div className="rounded-lg border border-accent/20 bg-background/60 px-5 py-4">
-            <p className="mb-1 text-xs uppercase tracking-wide text-muted">
-              Black-Scholes price
-            </p>
-            <p className="font-mono text-2xl font-medium tabular-nums text-accent">
-              {formatCurrency(result.price)}
-            </p>
-          </div>
-          <div className="rounded-lg border border-border bg-background/60 px-5 py-4">
-            <p className="mb-1 text-xs uppercase tracking-wide text-muted">
-              Monte Carlo price ({formatSimulationCount(deferredSimulationCount)}{" "}
-              simulations)
-            </p>
-            <p className="font-mono text-2xl font-medium tabular-nums text-foreground">
-              {formatCurrency(monteCarloResult.price)}
-            </p>
-          </div>
-          <div className="rounded-lg border border-border bg-background/60 px-5 py-4">
-            <p className="mb-1 text-xs uppercase tracking-wide text-muted">
-              Difference
-            </p>
-            <p className="font-mono text-2xl font-medium tabular-nums text-foreground">
-              {percentDifference}
-            </p>
-            <p className="mt-1 text-xs text-muted">MC vs. Black-Scholes</p>
-          </div>
-        </div>
-
-        <div className="mb-8">
-          <div className="mb-3 flex flex-wrap items-end justify-between gap-3">
-            <label htmlFor="simulationCount" className="block">
-              <span className="mb-1.5 block text-sm text-foreground">
-                Number of simulations
-              </span>
-              <span className="font-mono text-xs text-muted">
-                Log scale · {formatSimulationCount(simulationCount)} paths
-              </span>
-            </label>
-            <input
-              id="simulationCount"
-              type="number"
-              inputMode="numeric"
-              min={MIN_MONTE_CARLO_SIMULATIONS}
-              max={MAX_MONTE_CARLO_SIMULATIONS}
-              value={simulationCount}
-              onChange={(event) => {
-                const parsed = parseInt(event.target.value, 10);
-                if (Number.isFinite(parsed)) {
-                  setSimulationCount(
-                    Math.min(
-                      MAX_MONTE_CARLO_SIMULATIONS,
-                      Math.max(MIN_MONTE_CARLO_SIMULATIONS, parsed),
-                    ),
-                  );
-                }
-              }}
-              className="w-32 rounded-lg border border-border bg-background px-3 py-2 font-mono text-sm text-foreground outline-none transition-colors focus:border-accent/50 focus:ring-1 focus:ring-accent/30"
-            />
-          </div>
-          <input
-            type="range"
-            min={0}
-            max={1}
-            step={0.001}
-            value={sliderPositionFromSimulationCount(simulationCount)}
-            onChange={(event) =>
-              setSimulationCount(
-                simulationCountFromSlider(parseFloat(event.target.value)),
-              )
-            }
-            className="h-2 w-full cursor-pointer appearance-none rounded-full bg-border accent-accent"
-            aria-label="Simulation count slider"
-          />
-          <div className="mt-2 flex justify-between font-mono text-[11px] text-muted">
-            <span>{formatSimulationCount(MIN_MONTE_CARLO_SIMULATIONS)}</span>
-            <span>{formatSimulationCount(MAX_MONTE_CARLO_SIMULATIONS)}</span>
-          </div>
-        </div>
-
-        <div>
-          <h3 className="mb-4 font-mono text-xs uppercase tracking-widest text-muted">
-            Distribution of simulated final stock prices (S<sub>T</sub>)
-          </h3>
-          <div className="h-64 w-full sm:h-72">
-            {monteCarloResult.histogram.length > 0 ? (
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart
-                  data={monteCarloResult.histogram}
-                  margin={{ top: 8, right: 8, left: 0, bottom: 0 }}
-                >
-                  <CartesianGrid stroke="#2d3748" strokeDasharray="3 3" vertical={false} />
-                  <XAxis
-                    dataKey="label"
-                    tick={{ fill: "#94a3b8", fontSize: 11, fontFamily: "monospace" }}
-                    tickLine={false}
-                    axisLine={{ stroke: "#2d3748" }}
-                    minTickGap={24}
-                  />
-                  <YAxis
-                    tick={{ fill: "#94a3b8", fontSize: 11, fontFamily: "monospace" }}
-                    tickLine={false}
-                    axisLine={{ stroke: "#2d3748" }}
-                    width={40}
-                    allowDecimals={false}
-                  />
-                  <Tooltip content={<HistogramTooltip />} />
-                  <Bar
-                    dataKey="count"
-                    fill="#5eead4"
-                    fillOpacity={0.75}
-                    radius={[2, 2, 0, 0]}
-                  />
-                </BarChart>
-              </ResponsiveContainer>
-            ) : (
-              <div className="flex h-full items-center justify-center rounded-lg border border-dashed border-border bg-background/40 px-6 text-center text-sm text-muted">
-                Enter valid inputs to simulate stock price paths at expiry.
-              </div>
-            )}
-          </div>
-        </div>
-      </section>
 
       <section className="max-w-3xl space-y-4 text-sm leading-relaxed text-muted">
         <p>
