@@ -55,8 +55,7 @@ const experiences: ExperienceEntry[] = [
       "Researched statistical distance metrics and constrained spectral clustering in R, Python, and MATLAB, improving predictive accuracy to 89% and cutting algorithm runtime by 22%. Presented technical findings to non-technical audiences at annual symposiums.",
     papers: [
       {
-        title:
-          "Statistical Identification of a Distance Metric that Maximizes Interrater Reliability",
+        title: "Statistical Distance Metrics for Interrater Reliability",
         href: "/papers/distance-metrics.pdf",
       },
       {
@@ -115,7 +114,7 @@ function ExperiencePaperMenu({ papers }: { papers: PaperLink[] }) {
       {open && (
         <div
           role="menu"
-          className="absolute right-0 top-full z-20 mt-2 w-[min(22rem,calc(100vw-3rem))] rounded-lg border border-border bg-surface py-1 shadow-[0_8px_24px_rgba(0,0,0,0.4)]"
+          className="absolute right-0 top-full z-20 mt-2 w-max max-w-[calc(100vw-3rem)] rounded-lg border border-border bg-surface py-1 shadow-[0_8px_24px_rgba(0,0,0,0.4)]"
         >
           {papers.map((paper) => (
             <a
@@ -125,7 +124,7 @@ function ExperiencePaperMenu({ papers }: { papers: PaperLink[] }) {
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => setOpen(false)}
-              className="block px-3 py-2.5 text-left text-xs leading-snug text-muted transition-colors hover:bg-accent/10 hover:text-accent sm:text-sm"
+              className="block whitespace-nowrap px-3 py-2.5 text-left text-xs leading-snug text-muted transition-colors hover:bg-accent/10 hover:text-accent sm:text-sm"
             >
               {paper.title}
             </a>

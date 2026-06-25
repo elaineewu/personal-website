@@ -25,7 +25,7 @@ const projects: Project[] = [
   {
     title: "Moving Average Crossover Backtester",
     description:
-      "Backtest a moving average crossover strategy on NVIDIA and SPY historical data, comparing strategy returns against buy-and-hold and visualizing portfolio growth over time.",
+      "On 2021–2026 NVDA and SPY data, the moving average strategy underperformed buy-and-hold in both tests, a reminder that trend-following often lags during strong bull runs.",
     tags: ["TypeScript", "Next.js", "Trading Strategy", "Backtesting"],
     icon: TrendingUp,
     href: "/projects/ma-backtester",

@@ -297,6 +297,10 @@ export default function MaBacktester({ tickerRanges }: MaBacktesterProps) {
                 />
               </div>
             </div>
+            <p className="text-xs text-muted">
+              Historical data last updated 6/18/2026 — this tool uses static CSV
+              files, not live data.
+            </p>
 
             <button
               type="submit"
@@ -402,6 +406,13 @@ export default function MaBacktester({ tickerRanges }: MaBacktesterProps) {
               </div>
             )
           )}
+
+          <p className="mt-6 rounded-lg border border-border bg-surface/50 px-4 py-3 text-xs leading-relaxed text-muted">
+            Backtested on NVDA and SPY (2021–2026): the 50/200-day moving average
+            crossover underperformed buy-and-hold on both (NVDA: +722% vs. +1043%;
+            SPY: +56% vs. +77%), consistent with how trend-following strategies often
+            lag during sustained bull markets.
+          </p>
         </div>
       </div>
 

@@ -11,8 +11,7 @@ type ResearchPaper = {
 
 const papers: ResearchPaper[] = [
   {
-    title:
-      "Statistical Identification of a Distance Metric that Maximizes Interrater Reliability",
+    title: "Statistical Distance Metrics for Interrater Reliability",
     description:
       "Evaluated Euclidean, Canberra, and Manhattan distance metrics in R to measure inter-rater reliability between coders of qualitative classroom observation data at Honors Summer Math Camp at Mathworks.",
     icon: BookOpen,
@@ -58,15 +57,17 @@ export default function Research() {
           const cardContent = (
             <div className="flex items-start justify-between gap-4">
               <div className="min-w-0 flex-1">
-                <h3 className="mb-2 flex items-start gap-2.5 text-lg font-medium text-foreground transition-colors group-hover:text-accent sm:text-xl">
-                  <paper.icon
-                    className="h-6 w-6 shrink-0 text-accent"
-                    strokeWidth={1.5}
-                    aria-hidden="true"
-                  />
-                  <span className="min-w-0">{paper.title}</span>
-                  <span className="rounded-full border border-border bg-background/50 px-2 py-0.5 font-mono text-[10px] font-normal text-muted sm:text-xs">
-                    v1 / Preliminary
+                <h3 className="mb-2 flex flex-col gap-1.5 text-lg font-medium text-foreground transition-colors group-hover:text-accent sm:text-xl">
+                  <span className="flex items-start gap-2.5">
+                    <paper.icon
+                      className="h-6 w-6 shrink-0 text-accent"
+                      strokeWidth={1.5}
+                      aria-hidden="true"
+                    />
+                    <span className="min-w-0">{paper.title}</span>
+                  </span>
+                  <span className="inline-block w-fit rounded-full border border-border bg-background/50 px-2 py-0.5 font-mono text-[10px] font-normal text-muted sm:text-xs">
+                    Working Paper
                   </span>
                 </h3>
                 <p className="mb-4 max-w-2xl text-sm leading-relaxed text-muted sm:text-base">
