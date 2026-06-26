@@ -1,4 +1,4 @@
-import { Calculator, Spade, TrendingUp, type LucideIcon } from "lucide-react";
+import { Calculator, ChartLine, Spade, TrendingUp, type LucideIcon } from "lucide-react";
 import Link from "next/link";
 import RevealOnScroll from "./RevealOnScroll";
 import SectionHeading from "./SectionHeading";
@@ -39,6 +39,15 @@ const projects: Project[] = [
     icon: Spade,
     href: "/projects/gto-poker-calculator",
     github: "https://github.com/elaineewu/gto-poker-calculator",
+  },
+  // TODO: add GitHub link once extracted to standalone repo
+  {
+    title: "Blackjack Card Counting & Kelly Sizing Simulator",
+    description:
+      "Simulate basic-strategy blackjack with Hi-Lo counting and true count tracking, comparing flat, spread, and Kelly bet sizing through precomputed Monte Carlo runs. Explore edge curves by true count and bankroll growth across betting strategies.",
+    tags: ["TypeScript", "Next.js", "Kelly Criterion", "Risk Management"],
+    icon: ChartLine,
+    href: "/projects/blackjack-counter",
   },
 ];
 

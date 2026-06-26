@@ -40,3 +40,9 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 resume.txt
+
+# Full blackjack simulation checkpoint data (large; regenerate locally via npx tsx scripts/blackjack-sim/generate.ts)
+src/data/blackjack-sim/results-1000.json
+src/data/blackjack-sim/results-10000.json
+src/data/blackjack-sim/results-100000.json
+src/data/blackjack-sim/results-1000000.json

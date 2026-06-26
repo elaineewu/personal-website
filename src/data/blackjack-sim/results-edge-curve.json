@@ -1,0 +1,214 @@
+{
+  "buckets": [
+    {
+      "trueCount": -10,
+      "handCount": 813,
+      "averageOutcomePerUnit": -0.05211726384364821,
+      "standardError": 0.034203451831231454,
+      "confidenceInterval95": [
+        -0.11915602943286185,
+        0.01492150174556544
+      ]
+    },
+    {
+      "trueCount": -9,
+      "handCount": 942,
+      "averageOutcomePerUnit": -0.035305343511450385,
+      "standardError": 0.031870872065187905,
+      "confidenceInterval95": [
+        -0.09777225275921868,
+        0.027161565736317908
+      ]
+    },
+    {
+      "trueCount": -8,
+      "handCount": 1652,
+      "averageOutcomePerUnit": -0.0353395913859746,
+      "standardError": 0.02410241235004209,
+      "confidenceInterval95": [
+        -0.0825803195920571,
+        0.011901136820107891
+      ]
+    },
+    {
+      "trueCount": -7,
+      "handCount": 2951,
+      "averageOutcomePerUnit": -0.050724637681159424,
+      "standardError": 0.0178091820530478,
+      "confidenceInterval95": [
+        -0.08563063450513311,
+        -0.01581864085718574
+      ]
+    },
+    {
+      "trueCount": -6,
+      "handCount": 4875,
+      "averageOutcomePerUnit": -0.04944237918215613,
+      "standardError": 0.013921916548900775,
+      "confidenceInterval95": [
+        -0.07672933561800165,
+        -0.022155422746310615
+      ]
+    },
+    {
+      "trueCount": -5,
+      "handCount": 7402,
+      "averageOutcomePerUnit": -0.02721588819418904,
+      "standardError": 0.011371482256040719,
+      "confidenceInterval95": [
+        -0.049503993416028846,
+        -0.004927782972349231
+      ]
+    },
+    {
+      "trueCount": -4,
+      "handCount": 11704,
+      "averageOutcomePerUnit": -0.032356867980837194,
+      "standardError": 0.00906162358848794,
+      "confidenceInterval95": [
+        -0.05011765021427356,
+        -0.01459608574740083
+      ]
+    },
+    {
+      "trueCount": -3,
+      "handCount": 15878,
+      "averageOutcomePerUnit": -0.01716961498439126,
+      "standardError": 0.007811242991381318,
+      "confidenceInterval95": [
+        -0.032479651247498645,
+        -0.001859578721283877
+      ]
+    },
+    {
+      "trueCount": -2,
+      "handCount": 24555,
+      "averageOutcomePerUnit": -0.016232668244842745,
+      "standardError": 0.006272181531066551,
+      "confidenceInterval95": [
+        -0.028526144045733184,
+        -0.0039391924439523066
+      ]
+    },
+    {
+      "trueCount": -1,
+      "handCount": 29585,
+      "averageOutcomePerUnit": -0.01707443386010891,
+      "standardError": 0.00572959990190823,
+      "confidenceInterval95": [
+        -0.028304449667849042,
+        -0.005844418052368782
+      ]
+    },
+    {
+      "trueCount": 0,
+      "handCount": 52604,
+      "averageOutcomePerUnit": -0.006813194591916189,
+      "standardError": 0.004302614534609555,
+      "confidenceInterval95": [
+        -0.015246319079750915,
+        0.001619929895918539
+      ]
+    },
+    {
+      "trueCount": 1,
+      "handCount": 26695,
+      "averageOutcomePerUnit": 0.004611031543647605,
+      "standardError": 0.006040699662449479,
+      "confidenceInterval95": [
+        -0.007228739794753373,
+        0.016450802882048584
+      ]
+    },
+    {
+      "trueCount": 2,
+      "handCount": 20753,
+      "averageOutcomePerUnit": 0.001355442100031627,
+      "standardError": 0.0068604191619812864,
+      "confidenceInterval95": [
+        -0.012090979457451695,
+        0.014801863657514949
+      ]
+    },
+    {
+      "trueCount": 3,
+      "handCount": 14745,
+      "averageOutcomePerUnit": 0.012579821200510856,
+      "standardError": 0.0081533967729511,
+      "confidenceInterval95": [
+        -0.0034008364744732983,
+        0.02856047887549501
+      ]
+    },
+    {
+      "trueCount": 4,
+      "handCount": 10015,
+      "averageOutcomePerUnit": 0.019730646072706724,
+      "standardError": 0.009923126193957186,
+      "confidenceInterval95": [
+        0.00028131873255063736,
+        0.039179973412862806
+      ]
+    },
+    {
+      "trueCount": 5,
+      "handCount": 6321,
+      "averageOutcomePerUnit": -0.011329755515802028,
+      "standardError": 0.012461302290627405,
+      "confidenceInterval95": [
+        -0.03575390800543174,
+        0.013094396973827685
+      ]
+    },
+    {
+      "trueCount": 6,
+      "handCount": 4326,
+      "averageOutcomePerUnit": 0.030233573455577385,
+      "standardError": 0.01511399481639678,
+      "confidenceInterval95": [
+        0.0006101436154396962,
+        0.05985700329571507
+      ]
+    },
+    {
+      "trueCount": 7,
+      "handCount": 2515,
+      "averageOutcomePerUnit": 0.033624620060790276,
+      "standardError": 0.01989916679147597,
+      "confidenceInterval95": [
+        -0.005377746850502622,
+        0.07262698697208317
+      ]
+    },
+    {
+      "trueCount": 8,
+      "handCount": 1393,
+      "averageOutcomePerUnit": 0.05351056578050443,
+      "standardError": 0.02678208287133247,
+      "confidenceInterval95": [
+        0.00101768335269279,
+        0.10600344820831606
+      ]
+    },
+    {
+      "trueCount": 9,
+      "handCount": 769,
+      "averageOutcomePerUnit": 0.007462686567164179,
+      "standardError": 0.036236451701357336,
+      "confidenceInterval95": [
+        -0.0635607587674962,
+        0.07848613190182455
+      ]
+    },
+    {
+      "trueCount": 10,
+      "handCount": 686,
+      "averageOutcomePerUnit": 0.03138075313807531,
+      "standardError": 0.038164665675372224,
+      "confidenceInterval95": [
+        -0.04342199158565424,
+        0.10618349786180487
+      ]
+    }
+  ]
+}
