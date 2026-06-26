@@ -81,10 +81,10 @@ export function calculatePushEv(
     verdict = "Folding aligns with both the equilibrium chart and the negative estimated EV.";
   } else if (tableAction === "push" && evTotalBb <= 0) {
     verdict =
-      "The chart pushes this hand, but the simplified EV model is slightly negative — a mixed strategy would likely indifferent here.";
+      "The chart pushes this hand, but the simplified EV model is slightly negative. A mixed strategy would likely indifferent here.";
   } else if (tableAction === "fold" && evTotalBb >= 0) {
     verdict =
-      "The chart folds this hand, but the simplified EV model is slightly positive — real equilibrium play may mix here.";
+      "The chart folds this hand, but the simplified EV model is slightly positive. Real equilibrium play may mix here.";
   }
 
   return {

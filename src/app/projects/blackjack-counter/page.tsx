@@ -28,7 +28,7 @@ export default function BlackjackCounterPage() {
           </h1>
           <p className="mt-4 max-w-2xl text-base leading-relaxed text-muted">
             Monte Carlo simulation of basic-strategy blackjack with Hi-Lo counting and
-            bet spreading — exploring how player edge shifts with the true count.
+            bet spreading, exploring how player edge shifts with the true count.
           </p>
         </header>
 
@@ -41,7 +41,7 @@ export default function BlackjackCounterPage() {
             +1, neutral cards (7–9) as 0, and high cards (10 through Ace) as −1. The
             running count tracks the net balance of low versus high cards dealt from a
             six-deck shoe. True count converts that running tally into a per-deck
-            estimate — running count divided by estimated decks remaining — which is
+            estimate (running count divided by estimated decks remaining), which is
             the number bet-sizing rules key off of.
           </p>
           <p>
@@ -49,7 +49,7 @@ export default function BlackjackCounterPage() {
           </p>
           <p>
             Three betting strategies are compared. <strong className="font-medium text-foreground">Flat</strong> betting
-            wagers a fixed $10 every hand — a control baseline. <strong className="font-medium text-foreground">Spread</strong> betting
+            wagers a fixed $10 every hand as a control baseline. <strong className="font-medium text-foreground">Spread</strong> betting
             scales the wager with true count (minimum $10, multiplier capped at 8× base
             bet, and further capped at a $500 table maximum). <strong className="font-medium text-foreground">Kelly</strong> sizing
             uses a simplified linear edge estimate (~0.5% per true count), sits out at
@@ -57,7 +57,7 @@ export default function BlackjackCounterPage() {
           </p>
           <p>
             All results on this page are <strong className="font-medium text-foreground">precomputed offline</strong> and
-            loaded statically — the simulation does not run live in your browser. That
+            loaded statically. The simulation does not run live in your browser. That
             keeps page load fast even for million-hand datasets. The edge-vs-true-count
             chart below uses <strong className="font-medium text-foreground">flat-strategy hands only</strong>, so the
             curve reflects the game&apos;s underlying edge at each count without
@@ -70,7 +70,7 @@ export default function BlackjackCounterPage() {
             hands in one sitting.
           </p>
           <p className="rounded-lg border border-border bg-surface/50 px-4 py-3 text-xs leading-relaxed">
-            This project is for educational and illustrative purposes only — not gambling
+            This project is for educational and illustrative purposes only, not gambling
             advice. Real casino blackjack involves rule variations, heat, table limits,
             and other factors this simulation does not model.
           </p>
@@ -87,7 +87,7 @@ export default function BlackjackCounterPage() {
           <p>
             Aggregated across all flat-betting hands in the simulation, the underlying
             game shows a small negative edge for the player at neutral and negative true
-            counts — roughly −0.7% at true count 0, and worse in deeply negative
+            counts, roughly −0.7% at true count 0, and worse in deeply negative
             territory. Edge turns meaningfully positive somewhere around true count +3 to
             +5, though the 95% confidence bands at +3 still span zero, and even at +4
             the interval is wide enough that a single session could easily look
@@ -96,7 +96,7 @@ export default function BlackjackCounterPage() {
           </p>
           <p>
             Over short runs (1,000 or 10,000 hands), any of the three strategies can
-            finish ahead or behind — variance dominates at that scale. At 100,000 and
+            finish ahead or behind because variance dominates at that scale. At 100,000 and
             1,000,000 hands, a clearer pattern emerges: flat betting went bust in both
             long-run checkpoints despite only a modest negative realized edge, because
             a fixed wager keeps you exposed at unfavorable counts. Spread and Kelly
@@ -109,7 +109,7 @@ export default function BlackjackCounterPage() {
             Kelly finished near $1.38M but experienced a $167,000 drawdown along the
             way; spread ended around $24,000 with a $30,000 drawdown. Aggressive sizing
             realizes more of the count-based edge, but the ride is far rougher than flat
-            betting — and in shorter samples, Kelly can still finish well below starting
+            betting, and in shorter samples, Kelly can still finish well below starting
             bankroll. Card counting shifts the odds at favorable counts; it does not
             eliminate risk.
           </p>

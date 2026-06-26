@@ -571,7 +571,7 @@ export default function OptionsCalculator() {
           geometric Brownian motion to a final price S<sub>T</sub>. The option
           payoff on each path is averaged and discounted back to today. By the law
           of large numbers, this sample mean converges to the true expected payoff
-          as the number of simulations grows — which is exactly the quantity
+          as the number of simulations grows, which is exactly the quantity
           Black-Scholes computes in closed form. Watching the Monte Carlo estimate
           tighten toward the analytical price as you increase the simulation count
           is a practical confirmation that both methods are pricing the same

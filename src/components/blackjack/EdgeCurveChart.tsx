@@ -144,7 +144,7 @@ export default function EdgeCurveChart() {
       </div>
       <p className="mt-3 text-xs leading-relaxed text-muted">
         Confidence bands widen at extreme true counts because fewer hands occur in those
-        states — this reflects genuine statistical uncertainty, not a simulation error.
+        states. This reflects genuine statistical uncertainty, not a simulation error.
       </p>
     </div>
   );

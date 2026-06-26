@@ -298,7 +298,7 @@ export default function MaBacktester({ tickerRanges }: MaBacktesterProps) {
               </div>
             </div>
             <p className="text-xs text-muted">
-              Historical data last updated 6/18/2026 — this tool uses static CSV
+              Historical data last updated 6/18/2026. This tool uses static CSV
               files, not live data.
             </p>
 
@@ -418,7 +418,7 @@ export default function MaBacktester({ tickerRanges }: MaBacktesterProps) {
 
       <section className="max-w-3xl space-y-4 text-sm leading-relaxed text-muted">
         <p>
-          A moving average crossover strategy tracks two smoothed price trends — a
+          A moving average crossover strategy tracks two smoothed price trends: a
           short-term average and a long-term average. When the short average crosses
           above the long average (a &ldquo;golden cross&rdquo;), the strategy buys;
           when it crosses below (a &ldquo;death cross&rdquo;), it sells. The classic

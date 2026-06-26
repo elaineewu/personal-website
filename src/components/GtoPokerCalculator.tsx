@@ -392,22 +392,22 @@ export default function GtoPokerCalculator() {
             </p>
             <ul className="list-disc space-y-2 pl-5">
               <li>
-                <strong className="text-foreground">P(fold)</strong> — estimated probability the
+                <strong className="text-foreground">P(fold)</strong>: estimated probability the
                 opponent(s) fold to your shove.
               </li>
               <li>
-                <strong className="text-foreground">Amount won if folded</strong> — dead money you
+                <strong className="text-foreground">Amount won if folded</strong>: dead money you
                 collect (blinds) without a showdown.
               </li>
               <li>
-                <strong className="text-foreground">P(call)</strong> — 1 − P(fold).
+                <strong className="text-foreground">P(call)</strong>: 1 − P(fold).
               </li>
               <li>
-                <strong className="text-foreground">Equity</strong> — your share of the pot if the
+                <strong className="text-foreground">Equity</strong>: your share of the pot if the
                 hand goes to showdown, estimated by Monte Carlo simulation.
               </li>
               <li>
-                <strong className="text-foreground">Pot odds</strong> — the equity you need to
+                <strong className="text-foreground">Pot odds</strong>: the equity you need to
                 break even when called: amount risked ÷ total pot if called.
               </li>
             </ul>
@@ -433,7 +433,7 @@ export default function GtoPokerCalculator() {
                   to a single caller). Multi-way pots are out of scope.
                 </li>
                 <li>
-                  Tournament Independent Chip Model (ICM) considerations are not included — all EV
+                  Tournament Independent Chip Model (ICM) considerations are not included. All EV
                   is in chip EV (cEV).
                 </li>
                 <li>

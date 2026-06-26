@@ -1,4 +1,11 @@
-import { Calculator, ChartLine, Spade, TrendingUp, type LucideIcon } from "lucide-react";
+import {
+  Calculator,
+  ChartLine,
+  FileText,
+  Spade,
+  TrendingUp,
+  type LucideIcon,
+} from "lucide-react";
 import Link from "next/link";
 import RevealOnScroll from "./RevealOnScroll";
 import SectionHeading from "./SectionHeading";
@@ -10,6 +17,7 @@ type Project = {
   icon: LucideIcon;
   href?: string;
   github?: string;
+  notes?: string;
 };
 
 const projects: Project[] = [
@@ -48,6 +56,7 @@ const projects: Project[] = [
     icon: ChartLine,
     href: "/projects/blackjack-counter",
     github: "https://github.com/elaineewu/blackjack-card-counter",
+    notes: "/papers/blackjack-engineering-notes.pdf",
   },
 ];
 
@@ -108,6 +117,25 @@ function GitHubIcon() {
   );
 }
 
+function ProjectNotesLink({ href }: { href: string }) {
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label="Read engineering notes (opens in new tab)"
+      className="relative z-10 inline-flex shrink-0 items-center gap-1 text-muted transition-colors hover:text-accent"
+    >
+      <FileText
+        className="h-3.5 w-3.5"
+        strokeWidth={1.5}
+        aria-hidden="true"
+      />
+      <span className="font-mono text-xs">Engineering Notes</span>
+    </a>
+  );
+}
+
 export default function Projects() {
   return (
     <section id="projects" className="scroll-mt-24 lg:scroll-mt-0">
@@ -117,37 +145,70 @@ export default function Projects() {
       <ul className="flex flex-col gap-2">
         {projects.map((project, index) => {
           const isExternal = project.href?.startsWith("http") ?? false;
+          const hasInternalLink = Boolean(project.href && !isExternal);
+          const splitNotesLink = Boolean(project.notes && hasInternalLink);
+
+          const titleLinkClassName =
+            "inline-flex min-w-0 max-w-full items-center gap-2.5 text-lg font-medium text-foreground transition-colors group-hover:text-accent sm:text-xl";
+
+          const projectIcon = (
+            <project.icon
+              className="h-6 w-6 shrink-0 text-accent"
+              strokeWidth={1.5}
+              aria-hidden="true"
+            />
+          );
+
+          const descriptionAndTags = (
+            <>
+              <p className="mb-4 max-w-2xl text-sm leading-relaxed text-muted sm:text-base">
+                {project.description}
+              </p>
+              <ul className="flex flex-wrap gap-2">
+                {project.tags.map((tag) => (
+                  <li
+                    key={tag}
+                    className="rounded-full border border-border bg-background/50 px-3 py-1 font-mono text-xs text-muted"
+                  >
+                    {tag}
+                  </li>
+                ))}
+              </ul>
+            </>
+          );
 
           const cardContent = (
             <div className="flex items-start justify-between gap-4">
               <div className="min-w-0 flex-1">
-                <h3 className="mb-2 flex items-center gap-2.5 text-lg font-medium text-foreground transition-colors group-hover:text-accent sm:text-xl">
-                  <project.icon
-                    className="h-6 w-6 shrink-0 text-accent"
-                    strokeWidth={1.5}
-                    aria-hidden="true"
-                  />
-                  {project.title}
-                </h3>
-                <p className="mb-4 max-w-2xl text-sm leading-relaxed text-muted sm:text-base">
-                  {project.description}
-                </p>
-                <ul className="flex flex-wrap gap-2">
-                  {project.tags.map((tag) => (
-                    <li
-                      key={tag}
-                      className="rounded-full border border-border bg-background/50 px-3 py-1 font-mono text-xs text-muted"
+                {splitNotesLink ? (
+                  <>
+                    <div className="mb-2 flex flex-wrap items-baseline gap-x-3 gap-y-1">
+                      <Link href={project.href!} className={titleLinkClassName}>
+                        {projectIcon}
+                        <span className="min-w-0">{project.title}</span>
+                      </Link>
+                      <ProjectNotesLink href={project.notes!} />
+                    </div>
+                    <Link
+                      href={project.href!}
+                      className="block"
+                      aria-label={`View ${project.title}`}
                     >
-                      {tag}
-                    </li>
-                  ))}
-                </ul>
+                      {descriptionAndTags}
+                    </Link>
+                  </>
+                ) : (
+                  <>
+                    <h3 className="mb-2 flex items-center gap-2.5 text-lg font-medium text-foreground transition-colors group-hover:text-accent sm:text-xl">
+                      {projectIcon}
+                      {project.title}
+                    </h3>
+                    {descriptionAndTags}
+                  </>
+                )}
               </div>
               {(project.href || project.github) && (
-                <div
-                  className="mt-1 w-[4.5rem] shrink-0"
-                  aria-hidden="true"
-                />
+                <div className="mt-1 w-[4.5rem] shrink-0" aria-hidden="true" />
               )}
             </div>
           );
@@ -156,9 +217,9 @@ export default function Projects() {
             <li key={project.title}>
               <RevealOnScroll delay={index * 120}>
                 <article className="group relative -mx-4 rounded-lg transition-all duration-200 hover:bg-surface sm:-mx-6">
-                  {project.href && !isExternal ? (
+                  {hasInternalLink && !splitNotesLink ? (
                     <Link
-                      href={project.href}
+                      href={project.href!}
                       className="block rounded-lg px-4 py-5 sm:px-6"
                       aria-label={`View ${project.title}`}
                     >
