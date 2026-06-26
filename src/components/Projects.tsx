@@ -40,7 +40,6 @@ const projects: Project[] = [
     href: "/projects/gto-poker-calculator",
     github: "https://github.com/elaineewu/gto-poker-calculator",
   },
-  // TODO: add GitHub link once extracted to standalone repo
   {
     title: "Blackjack Card Counting & Kelly Sizing Simulator",
     description:
@@ -48,6 +47,7 @@ const projects: Project[] = [
     tags: ["TypeScript", "Next.js", "Kelly Criterion", "Risk Management"],
     icon: ChartLine,
     href: "/projects/blackjack-counter",
+    github: "https://github.com/elaineewu/blackjack-card-counter",
   },
 ];
 
