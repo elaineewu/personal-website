@@ -1,7 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { FileText } from "lucide-react";
 import BlackjackSimulator from "@/components/blackjack/BlackjackSimulator";
 import EdgeCurveChart from "@/components/blackjack/EdgeCurveChart";
+
+const TECHNICAL_NOTE_HREF = "/papers/blackjack-technical-note.pdf";
+const TECHNICAL_NOTE_ARIA_LABEL =
+  "Read the technical note on card counting, Kelly sizing, and the math behind them (opens in new tab)";
 
 export const metadata: Metadata = {
   title: "Blackjack Card Counting & Kelly Sizing Simulator | Elaine Wu",
@@ -32,47 +37,75 @@ export default function BlackjackCounterPage() {
           </p>
         </header>
 
+        <p className="mb-12">
+          <a
+            href={TECHNICAL_NOTE_HREF}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={TECHNICAL_NOTE_ARIA_LABEL}
+            className="inline-flex items-center gap-2 font-mono text-sm text-accent transition-colors hover:text-foreground"
+          >
+            <FileText className="h-4 w-4" strokeWidth={1.5} aria-hidden="true" />
+            Read the technical note
+          </a>
+        </p>
+
         <section className="mb-12 max-w-3xl space-y-4 text-sm leading-relaxed text-muted">
           <h2 className="font-mono text-xs uppercase tracking-widest text-accent">
             Methodology
           </h2>
           <p>
-            This simulator uses the Hi-Lo card-counting system: low cards (2–6) count as
-            +1, neutral cards (7–9) as 0, and high cards (10 through Ace) as −1. The
-            running count tracks the net balance of low versus high cards dealt from a
-            six-deck shoe. True count converts that running tally into a per-deck
-            estimate (running count divided by estimated decks remaining), which is
-            the number bet-sizing rules key off of.
+            This simulator uses Hi-Lo counting: low cards (2–6) are +1, neutral cards
+            (7–9) are 0, and high cards (10 through Ace) are −1. True count is the
+            running count divided by estimated decks remaining—the per-deck value
+            bet-sizing rules key off of.
           </p>
           <p>
-            Player decisions follow a <strong className="font-medium text-foreground">simplified basic-strategy heuristic</strong>, not a complete basic-strategy table. The rules cover the most common hit/stand/split/double situations but omit surrender, re-splitting, soft doubling, and many upcard-specific edge cases. That keeps the simulation focused on count-based betting rather than perfect play optimization.
+            Three betting strategies are compared.{" "}
+            <strong className="font-medium text-foreground">Flat</strong> betting wagers a
+            fixed $10 every hand as a control baseline.{" "}
+            <strong className="font-medium text-foreground">Spread</strong> betting scales
+            the wager with true count (minimum $10, multiplier capped at 8×, and further
+            capped at a $500 table maximum).{" "}
+            <strong className="font-medium text-foreground">Kelly</strong> sizing uses a
+            simplified linear edge estimate (~0.5% per true count), sits out at
+            non-positive counts, and applies the same $500 cap.
           </p>
           <p>
-            Three betting strategies are compared. <strong className="font-medium text-foreground">Flat</strong> betting
-            wagers a fixed $10 every hand as a control baseline. <strong className="font-medium text-foreground">Spread</strong> betting
-            scales the wager with true count (minimum $10, multiplier capped at 8× base
-            bet, and further capped at a $500 table maximum). <strong className="font-medium text-foreground">Kelly</strong> sizing
-            uses a simplified linear edge estimate (~0.5% per true count), sits out at
-            non-positive counts, and applies the same $500 table maximum.
+            All results on this page are{" "}
+            <strong className="font-medium text-foreground">precomputed offline</strong> and
+            loaded statically—the simulation does not run live in your browser. The
+            edge-vs-true-count chart below uses{" "}
+            <strong className="font-medium text-foreground">flat-strategy hands only</strong>
+            , so the curve reflects the game&apos;s underlying edge at each count without
+            spread or Kelly bet sizing mixed in.
           </p>
           <p>
-            All results on this page are <strong className="font-medium text-foreground">precomputed offline</strong> and
-            loaded statically. The simulation does not run live in your browser. That
-            keeps page load fast even for million-hand datasets. The edge-vs-true-count
-            chart below uses <strong className="font-medium text-foreground">flat-strategy hands only</strong>, so the
-            curve reflects the game&apos;s underlying edge at each count without
-            confounding from spread or Kelly bet sizing.
+            Confidence bands widen at extreme true counts because fewer hands occur there,
+            so edge estimates are less precise exactly where advantage play matters most.
           </p>
           <p>
             Checkpoints at 100,000 and 1,000,000 hands represent long-run statistical
-            convergence, not a realistic individual casino session. They are useful for
-            seeing asymptotic behavior, but no one actually plays a million consecutive
-            hands in one sitting.
+            convergence, not a realistic individual casino session.
           </p>
           <p className="rounded-lg border border-border bg-surface/50 px-4 py-3 text-xs leading-relaxed">
             This project is for educational and illustrative purposes only, not gambling
             advice. Real casino blackjack involves rule variations, heat, table limits,
             and other factors this simulation does not model.
+          </p>
+          <p>
+            For the full reasoning behind counting, Kelly sizing, and the underlying
+            math—with citations—see the{" "}
+            <a
+              href={TECHNICAL_NOTE_HREF}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={TECHNICAL_NOTE_ARIA_LABEL}
+              className="text-accent transition-colors hover:text-foreground"
+            >
+              technical note
+            </a>
+            .
           </p>
         </section>
 
