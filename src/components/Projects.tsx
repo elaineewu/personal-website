@@ -33,7 +33,7 @@ const projects: Project[] = [
   {
     title: "Moving Average Crossover Backtester",
     description:
-      "On 2021–2026 NVDA and SPY data, the moving average strategy underperformed buy-and-hold in both tests, a reminder that trend-following often lags during strong bull runs.",
+      "Buy-and-hold beat the 50/200-day MA crossover on both NVDA (+1,043% vs. +722%) and SPY (+77% vs. +56%) from 2021 to 2026, consistent with trend-following lagging strong bull runs.",
     tags: ["TypeScript", "Next.js", "Trading Strategy", "Backtesting"],
     icon: TrendingUp,
     href: "/projects/ma-backtester",
@@ -51,7 +51,7 @@ const projects: Project[] = [
   {
     title: "Blackjack Card Counting & Kelly Sizing Simulator",
     description:
-      "Simulate basic-strategy blackjack with Hi-Lo counting and true count tracking, comparing flat, spread, and Kelly bet sizing through precomputed Monte Carlo runs. Explore edge curves by true count and bankroll growth across betting strategies.",
+      "Kelly sizing grew a $10,000 bankroll to $1.38M over one million simulated hands (138×), while flat betting went bust. At true count +4, player edge reaches +1.97% per unit wagered.",
     tags: ["TypeScript", "Next.js", "Kelly Criterion", "Risk Management"],
     icon: ChartLine,
     href: "/projects/blackjack-counter",
