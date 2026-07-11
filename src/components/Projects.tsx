@@ -51,7 +51,7 @@ const projects: Project[] = [
   {
     title: "Blackjack Card Counting & Kelly Sizing Simulator",
     description:
-      "Kelly sizing grew a $10,000 bankroll to $1.38M over one million simulated hands (138×), while flat betting went bust. At true count +4, player edge reaches +1.97% per unit wagered.",
+      "Kelly sizing grew a $10,000 bankroll to a median of 75x over one million simulated hands (up to 174x, with a 28% bust rate across 50 seeds), while flat betting busted in all 50 runs. At true count +4, player edge reaches +1.97% per unit wagered.",
     tags: ["TypeScript", "Next.js", "Kelly Criterion", "Risk Management"],
     icon: ChartLine,
     href: "/projects/blackjack-counter",
