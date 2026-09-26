@@ -98,7 +98,7 @@ export const projectEntries: ProjectEntry[] = [
     tags: ["Python", "pandas", "Alpha Research", "Overfitting"],
     icon: "flask",
     projectPageUrl: "/projects/alpha101-constants",
-    githubUrl: "https://github.com/elaineewu/personal-website/tree/main/research/alpha101",
+    githubUrl: "https://github.com/elaineewu/alpha101-constants",
   },
   {
     title: "Black-Scholes vs. Monte Carlo: Options Calculator",

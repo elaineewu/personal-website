@@ -7,7 +7,7 @@ import WindowHeatmap from "@/components/alpha101/WindowHeatmap";
 import { alpha101, alphaIds, formatIc, formatNum } from "@/lib/alpha101/data";
 
 const CODE_HREF =
-  "https://github.com/elaineewu/personal-website/tree/main/research/alpha101";
+  "https://github.com/elaineewu/alpha101-constants";
 
 export const metadata: Metadata = {
   title: "Stress-Testing the Constants in 101 Formulaic Alphas | Elaine Wu",
