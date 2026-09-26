@@ -4,7 +4,7 @@ export const siteHero = {
 } as const;
 
 export const aboutSection = {
-  body: `Hi! I'm Elaine, an Operations Research and Financial Engineering student at Princeton with a focus on quantitative finance and data analysis. I'm drawn to problems where models and market data tell a clear story, and I bring that story to life through software engineering. Right now I'm a Software Engineering Intern at Varsity Software, where I work on end-to-end product development for client web apps. I'm interested in work at the intersection of markets and analytics: turning messy datasets into clear decisions, and using AI to move faster without sacrificing craft.`,
+  body: `Hi! I'm Elaine, an Operations Research and Financial Engineering student at Princeton with a focus on quantitative finance and data analysis. I'm drawn to problems where models and market data tell a clear story, and I bring that story to life through software engineering. I'm interested in work at the intersection of markets and analytics: turning messy datasets into clear decisions, and using AI to move faster without sacrificing craft.`,
 } as const;
 
 export type ExperienceLink = {
@@ -27,9 +27,9 @@ export const experienceEntries: ExperienceEntry[] = [
     id: "varsity",
     title: "Software Engineering Intern",
     organization: "Varsity Software",
-    dates: "Jan 2026 – Present",
+    dates: "Jan – Sep 2026",
     description:
-      "Own end-to-end product development for client web apps, from discovery and UX design through deployment. Building an AI-powered business assessment tool and migrating the Princeton University store marketplace, using generative AI to accelerate prototyping cycles.",
+      "Owned end-to-end product development for client web apps, from discovery and UX design through deployment. Built an AI-powered business assessment tool and migrating the Princeton University store marketplace, using generative AI to accelerate prototyping cycles.",
   },
   {
     id: "smile-train",
