@@ -1,7 +1,9 @@
+import { contactSection } from "@/lib/data";
+
 const links = [
   {
     label: "GitHub",
-    href: "https://github.com/elaineewu",
+    href: contactSection.github,
     icon: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -20,7 +22,7 @@ const links = [
   },
   {
     label: "LinkedIn",
-    href: "https://www.linkedin.com/in/elaineewu",
+    href: contactSection.linkedIn,
     icon: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -41,7 +43,7 @@ const links = [
   },
   {
     label: "Email",
-    href: "mailto:ew8414@princeton.edu",
+    href: `mailto:${contactSection.email}`,
     icon: (
       <svg
         xmlns="http://www.w3.org/2000/svg"

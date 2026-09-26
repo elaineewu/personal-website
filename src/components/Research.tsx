@@ -1,30 +1,12 @@
-import { BookOpen, type LucideIcon } from "lucide-react";
+"use client";
+
+import { BookOpen } from "lucide-react";
+import { researchEntries } from "@/lib/data";
+import { getResearchPayload } from "@/lib/api-payloads";
+import ApiJsonPanel from "./ApiJsonPanel";
 import RevealOnScroll from "./RevealOnScroll";
 import SectionHeading from "./SectionHeading";
-
-type ResearchPaper = {
-  title: string;
-  description: string;
-  icon: LucideIcon;
-  href: string;
-};
-
-const papers: ResearchPaper[] = [
-  {
-    title: "Statistical Distance Metrics for Interrater Reliability",
-    description:
-      "Evaluated Euclidean, Canberra, and Manhattan distance metrics in R to measure inter-rater reliability between coders of qualitative classroom observation data at Honors Summer Math Camp at Mathworks.",
-    icon: BookOpen,
-    href: "/papers/distance-metrics.pdf",
-  },
-  {
-    title: "Implementing Fairness Constraints in Spectral Clustering",
-    description:
-      "Incorporated a fairness/balance constraint into the spectral clustering optimization problem and evaluated it on real-world social network datasets at Honors Summer Math Camp at Mathworks.",
-    icon: BookOpen,
-    href: "/papers/spectral-clustering-fairness.pdf",
-  },
-];
+import { useViewMode } from "./ViewModeProvider";
 
 function ExternalLinkIcon() {
   return (
@@ -47,19 +29,24 @@ function ExternalLinkIcon() {
 }
 
 export default function Research() {
+  const { isApiView } = useViewMode();
+
   return (
     <section id="research" className="scroll-mt-24 lg:scroll-mt-0">
       <RevealOnScroll>
         <SectionHeading number="04" title="Research" />
       </RevealOnScroll>
+      {isApiView ? (
+        <ApiJsonPanel endpoint="/api/research" payload={getResearchPayload()} />
+      ) : (
       <ul className="flex flex-col gap-2">
-        {papers.map((paper, index) => {
+        {researchEntries.map((paper, index) => {
           const cardContent = (
             <div className="flex items-start justify-between gap-4">
               <div className="min-w-0 flex-1">
                 <h3 className="mb-2 flex flex-col gap-1.5 text-lg font-medium text-foreground transition-colors group-hover:text-accent sm:text-xl">
                   <span className="flex items-start gap-2.5">
-                    <paper.icon
+                    <BookOpen
                       className="h-6 w-6 shrink-0 text-accent"
                       strokeWidth={1.5}
                       aria-hidden="true"
@@ -67,7 +54,7 @@ export default function Research() {
                     <span className="min-w-0">{paper.title}</span>
                   </span>
                   <span className="inline-block w-fit rounded-full border border-border bg-background/50 px-2 py-0.5 font-mono text-[10px] font-normal text-muted sm:text-xs">
-                    Working Paper
+                    {paper.status}
                   </span>
                 </h3>
                 <p className="mb-4 max-w-2xl text-sm leading-relaxed text-muted sm:text-base">
@@ -86,7 +73,7 @@ export default function Research() {
               <RevealOnScroll delay={index * 120}>
                 <article className="group relative -mx-4 rounded-lg transition-all duration-200 hover:bg-surface sm:-mx-6">
                   <a
-                    href={paper.href}
+                    href={paper.pdfUrl}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="block rounded-lg px-4 py-5 sm:px-6"
@@ -109,6 +96,7 @@ export default function Research() {
           );
         })}
       </ul>
+      )}
     </section>
   );
 }

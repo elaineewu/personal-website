@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Calculator,
   ChartLine,
@@ -7,58 +9,23 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import Link from "next/link";
+import {
+  projectEntries,
+  type ProjectEntry,
+  type ProjectIconKey,
+} from "@/lib/data";
+import { getProjectsPayload } from "@/lib/api-payloads";
+import ApiJsonPanel from "./ApiJsonPanel";
 import RevealOnScroll from "./RevealOnScroll";
 import SectionHeading from "./SectionHeading";
+import { useViewMode } from "./ViewModeProvider";
 
-type Project = {
-  title: string;
-  description: string;
-  tags: string[];
-  icon: LucideIcon;
-  href?: string;
-  github?: string;
-  notes?: string;
+const projectIcons: Record<ProjectIconKey, LucideIcon> = {
+  calculator: Calculator,
+  trendingUp: TrendingUp,
+  spade: Spade,
+  chartLine: ChartLine,
 };
-
-const projects: Project[] = [
-  {
-    title: "Black-Scholes vs. Monte Carlo: Options Calculator",
-    description:
-      "Price European call and put options using the Black-Scholes model, and verify the result with a Monte Carlo simulation.",
-    tags: ["TypeScript", "Next.js", "Quantitative Finance"],
-    icon: Calculator,
-    href: "/projects/options-calculator",
-    github: "https://github.com/elaineewu/options-calculator",
-  },
-  {
-    title: "Moving Average Crossover Backtester",
-    description:
-      "Buy-and-hold beat the 50/200-day MA crossover on both NVDA (+1,043% vs. +722%) and SPY (+77% vs. +56%) from 2021 to 2026, consistent with trend-following lagging strong bull runs.",
-    tags: ["TypeScript", "Next.js", "Trading Strategy", "Backtesting"],
-    icon: TrendingUp,
-    href: "/projects/ma-backtester",
-    github: "https://github.com/elaineewu/ma-backtester",
-  },
-  {
-    title: "GTO Poker Range Calculator",
-    description:
-      "Visualize Nash equilibrium push/fold ranges at short stack depths and explore the expected value reasoning behind each shove-or-fold decision.",
-    tags: ["Game Theory", "Probability", "TypeScript", "Monte Carlo Simulation"],
-    icon: Spade,
-    href: "/projects/gto-poker-calculator",
-    github: "https://github.com/elaineewu/gto-poker-calculator",
-  },
-  {
-    title: "Blackjack Card Counting & Kelly Sizing Simulator",
-    description:
-      "Kelly sizing grew a $10,000 bankroll to a median of 75x over one million simulated hands (up to 174x, with a 28% bust rate across 50 seeds), while flat betting busted in all 50 runs. At true count +4, player edge reaches +1.97% per unit wagered.",
-    tags: ["TypeScript", "Next.js", "Kelly Criterion", "Risk Management"],
-    icon: ChartLine,
-    href: "/projects/blackjack-counter",
-    github: "https://github.com/elaineewu/blackjack-card-counter",
-    notes: "/papers/blackjack-engineering-notes.pdf",
-  },
-];
 
 function ExternalLinkIcon() {
   return (
@@ -117,13 +84,13 @@ function GitHubIcon() {
   );
 }
 
-function ProjectNotesLink({ href }: { href: string }) {
+function ProjectNotesLink({ href, label }: { href: string; label: string }) {
   return (
     <a
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      aria-label="Read engineering notes (opens in new tab)"
+      aria-label={`Read ${label.toLowerCase()} (opens in new tab)`}
       className="relative z-10 inline-flex shrink-0 items-center gap-1 text-muted transition-colors hover:text-accent"
     >
       <FileText
@@ -131,28 +98,42 @@ function ProjectNotesLink({ href }: { href: string }) {
         strokeWidth={1.5}
         aria-hidden="true"
       />
-      <span className="font-mono text-xs">Engineering Notes</span>
+      <span className="font-mono text-xs">{label}</span>
     </a>
   );
 }
 
+function projectNotesHref(project: ProjectEntry) {
+  return project.extraLinks?.find((link) => link.label === "Engineering Notes")
+    ?.href;
+}
+
 export default function Projects() {
+  const { isApiView } = useViewMode();
+
   return (
     <section id="projects" className="scroll-mt-24 lg:scroll-mt-0">
       <RevealOnScroll>
         <SectionHeading number="03" title="Projects" />
       </RevealOnScroll>
+      {isApiView ? (
+        <ApiJsonPanel endpoint="/api/projects" payload={getProjectsPayload()} />
+      ) : (
       <ul className="flex flex-col gap-2">
-        {projects.map((project, index) => {
-          const isExternal = project.href?.startsWith("http") ?? false;
-          const hasInternalLink = Boolean(project.href && !isExternal);
-          const splitNotesLink = Boolean(project.notes && hasInternalLink);
+        {projectEntries.map((project, index) => {
+          const ProjectIcon = projectIcons[project.icon];
+          const isExternal = project.projectPageUrl?.startsWith("http") ?? false;
+          const hasInternalLink = Boolean(
+            project.projectPageUrl && !isExternal,
+          );
+          const notesHref = projectNotesHref(project);
+          const splitNotesLink = Boolean(notesHref && hasInternalLink);
 
           const titleLinkClassName =
             "inline-flex min-w-0 max-w-full items-center gap-2.5 text-lg font-medium text-foreground transition-colors group-hover:text-accent sm:text-xl";
 
           const projectIcon = (
-            <project.icon
+            <ProjectIcon
               className="h-6 w-6 shrink-0 text-accent"
               strokeWidth={1.5}
               aria-hidden="true"
@@ -183,14 +164,17 @@ export default function Projects() {
                 {splitNotesLink ? (
                   <>
                     <div className="mb-2 flex flex-wrap items-baseline gap-x-3 gap-y-1">
-                      <Link href={project.href!} className={titleLinkClassName}>
+                      <Link
+                        href={project.projectPageUrl!}
+                        className={titleLinkClassName}
+                      >
                         {projectIcon}
                         <span className="min-w-0">{project.title}</span>
                       </Link>
-                      <ProjectNotesLink href={project.notes!} />
+                      <ProjectNotesLink href={notesHref!} label="Engineering Notes" />
                     </div>
                     <Link
-                      href={project.href!}
+                      href={project.projectPageUrl!}
                       className="block"
                       aria-label={`View ${project.title}`}
                     >
@@ -207,7 +191,7 @@ export default function Projects() {
                   </>
                 )}
               </div>
-              {(project.href || project.github) && (
+              {(project.projectPageUrl || project.githubUrl) && (
                 <div className="mt-1 w-[4.5rem] shrink-0" aria-hidden="true" />
               )}
             </div>
@@ -219,7 +203,7 @@ export default function Projects() {
                 <article className="group relative -mx-4 rounded-lg transition-all duration-200 hover:bg-surface sm:-mx-6">
                   {hasInternalLink && !splitNotesLink ? (
                     <Link
-                      href={project.href!}
+                      href={project.projectPageUrl!}
                       className="block rounded-lg px-4 py-5 sm:px-6"
                       aria-label={`View ${project.title}`}
                     >
@@ -230,11 +214,11 @@ export default function Projects() {
                       {cardContent}
                     </div>
                   )}
-                  {(project.href || project.github) && (
+                  {(project.projectPageUrl || project.githubUrl) && (
                     <div className="pointer-events-none absolute right-4 top-5 flex items-center gap-3 opacity-0 transition-all duration-200 group-hover:opacity-100 sm:right-6">
-                      {project.github && (
+                      {project.githubUrl && (
                         <a
-                          href={project.github}
+                          href={project.githubUrl}
                           target="_blank"
                           rel="noopener noreferrer"
                           aria-label={`View ${project.title} on GitHub (opens in new tab)`}
@@ -243,10 +227,10 @@ export default function Projects() {
                           <GitHubIcon />
                         </a>
                       )}
-                      {project.href &&
+                      {project.projectPageUrl &&
                         (isExternal ? (
                           <a
-                            href={project.href}
+                            href={project.projectPageUrl}
                             target="_blank"
                             rel="noopener noreferrer"
                             aria-label={`View ${project.title} (opens in new tab)`}
@@ -271,6 +255,7 @@ export default function Projects() {
           );
         })}
       </ul>
+      )}
     </section>
   );
 }

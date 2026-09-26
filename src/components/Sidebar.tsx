@@ -1,11 +1,13 @@
 "use client";
 
 import { useState } from "react";
+import { siteHero } from "@/lib/data";
+import { getApiIndexPayload } from "@/lib/api-payloads";
+import ApiJsonPanel from "./ApiJsonPanel";
 import SocialIcons from "./SocialIcons";
 import TypewriterTagline from "./TypewriterTagline";
-
-const TAGLINE =
-  "Quant finance, data analysis, and the code behind both.";
+import ViewToggle from "./ViewToggle";
+import { useViewMode } from "./ViewModeProvider";
 
 const navItems = [
   { label: "About", href: "#about" },
@@ -17,28 +19,32 @@ const navItems = [
 
 export default function Sidebar() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const { isApiView } = useViewMode();
 
   return (
     <>
       {/* Mobile header */}
       <header className="fixed inset-x-0 top-0 z-50 border-b border-border bg-background/90 backdrop-blur-md lg:hidden">
-        <div className="flex items-center justify-between px-6 py-4">
+        <div className="flex items-center justify-between gap-3 px-6 py-4">
           <a
             href="#"
-            className="font-mono text-lg font-semibold tracking-tight text-foreground transition-colors hover:text-accent"
+            className="min-w-0 truncate font-mono text-lg font-semibold tracking-tight text-foreground transition-colors hover:text-accent"
           >
-            Elaine Wu
+            {siteHero.name}
           </a>
-          <button
-            type="button"
-            onClick={() => setMenuOpen((open) => !open)}
-            aria-expanded={menuOpen}
-            aria-controls="mobile-nav"
-            aria-label={menuOpen ? "Close menu" : "Open menu"}
-            className="font-mono text-sm text-accent transition-colors hover:text-foreground"
-          >
-            {menuOpen ? "Close" : "Menu"}
-          </button>
+          <div className="flex shrink-0 items-center gap-3">
+            <ViewToggle />
+            <button
+              type="button"
+              onClick={() => setMenuOpen((open) => !open)}
+              aria-expanded={menuOpen}
+              aria-controls="mobile-nav"
+              aria-label={menuOpen ? "Close menu" : "Open menu"}
+              className="font-mono text-sm text-accent transition-colors hover:text-foreground"
+            >
+              {menuOpen ? "Close" : "Menu"}
+            </button>
+          </div>
         </div>
 
         {menuOpen && (
@@ -70,13 +76,22 @@ export default function Sidebar() {
       {/* Desktop sidebar */}
       <aside className="hidden lg:fixed lg:inset-y-0 lg:left-0 lg:flex lg:w-[min(40vw,320px)] lg:flex-col lg:justify-between lg:px-12 lg:py-16 xl:px-16">
         <div>
-          <a
-            href="#"
-            className="font-mono text-2xl font-semibold tracking-tight text-foreground transition-colors hover:text-accent"
-          >
-            Elaine Wu
-          </a>
-          <TypewriterTagline text={TAGLINE} />
+          <div className="flex flex-wrap items-start justify-between gap-3">
+            <a
+              href="#"
+              className="font-mono text-2xl font-semibold tracking-tight text-foreground transition-colors hover:text-accent"
+            >
+              {siteHero.name}
+            </a>
+            <ViewToggle className="shrink-0" />
+          </div>
+          {isApiView ? (
+            <div className="mt-6">
+              <ApiJsonPanel endpoint="/api" payload={getApiIndexPayload()} />
+            </div>
+          ) : (
+            <TypewriterTagline text={siteHero.tagline} />
+          )}
 
           <nav className="mt-12" aria-label="Main navigation">
             <ul className="flex flex-col gap-3">

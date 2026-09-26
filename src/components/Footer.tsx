@@ -63,6 +63,7 @@ export default function Footer() {
   return (
     <>
       <footer className="mx-auto mt-32 max-w-3xl border-t border-border pt-8 font-mono text-xs text-muted">
+        <p className="mb-2 text-muted/70">psst, press /</p>
         <p className="inline-flex flex-wrap items-center gap-x-1.5">
           <span>Built by Elaine Wu</span>
           <button

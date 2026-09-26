@@ -2,71 +2,14 @@
 
 import { FileText } from "lucide-react";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { experienceEntries, type ExperienceLink } from "@/lib/data";
+import { getExperiencePayload } from "@/lib/api-payloads";
+import ApiJsonPanel from "./ApiJsonPanel";
 import RevealOnScroll from "./RevealOnScroll";
 import SectionHeading from "./SectionHeading";
+import { useViewMode } from "./ViewModeProvider";
 
-type PaperLink = {
-  title: string;
-  href: string;
-};
-
-type ExperienceEntry = {
-  id: string;
-  title: string;
-  organization: string;
-  dates: string;
-  description: string;
-  swapHierarchy?: boolean;
-  papers?: PaperLink[];
-};
-
-const experiences: ExperienceEntry[] = [
-  {
-    id: "varsity",
-    title: "Software Engineering Intern",
-    organization: "Varsity Software",
-    dates: "Jan 2026 – Present",
-    description:
-      "Own end-to-end product development for client web apps, from discovery and UX design through deployment. Building an AI-powered business assessment tool and migrating the Princeton University store marketplace, using generative AI to accelerate prototyping cycles.",
-  },
-  {
-    id: "smile-train",
-    title: "Data Analyst Intern",
-    organization: "Smile Train",
-    dates: "Jun – Aug 2025",
-    description:
-      "Partnered with fundraising and program teams to turn donation data into actionable insights, building Qlik Sense dashboards and querying SQL datasets to speed up regional funding decisions and address donor drop-off patterns.",
-  },
-  {
-    id: "princeton",
-    title: "Operations Research & Financial Engineering",
-    organization: "Princeton University",
-    dates: "Sep 2024 – Present",
-    description:
-      "Pursuing a B.S.E. in Operations Research and Financial Engineering with minors in Statistics & Machine Learning and Finance, building a foundation in probability, optimization, and financial mathematics.",
-    swapHierarchy: true,
-  },
-  {
-    id: "math-camp",
-    title: "Researcher",
-    organization: "Honors Summer Math Camp at Mathworks",
-    dates: "Summers 2021–2024",
-    description:
-      "Researched statistical distance metrics and constrained spectral clustering in R, Python, and MATLAB, improving predictive accuracy to 89% and cutting algorithm runtime by 22%. Presented technical findings to non-technical audiences at annual symposiums.",
-    papers: [
-      {
-        title: "Statistical Distance Metrics for Interrater Reliability",
-        href: "/papers/distance-metrics.pdf",
-      },
-      {
-        title: "Implementing Fairness Constraints in Spectral Clustering",
-        href: "/papers/spectral-clustering-fairness.pdf",
-      },
-    ],
-  },
-];
-
-function ExperiencePaperMenu({ papers }: { papers: PaperLink[] }) {
+function ExperiencePaperMenu({ papers }: { papers: ExperienceLink[] }) {
   const [open, setOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
@@ -136,6 +79,7 @@ function ExperiencePaperMenu({ papers }: { papers: PaperLink[] }) {
 }
 
 export default function Experience() {
+  const { isApiView } = useViewMode();
   const sectionRef = useRef<HTMLElement>(null);
   const timelineRef = useRef<HTMLDivElement>(null);
   const dotRefs = useRef<(HTMLDivElement | null)[]>([]);
@@ -143,7 +87,7 @@ export default function Experience() {
   const [lineTop, setLineTop] = useState(0);
   const [lineHeight, setLineHeight] = useState(0);
   const [activeDots, setActiveDots] = useState<boolean[]>(
-    () => experiences.map(() => false),
+    () => experienceEntries.map(() => false),
   );
 
   useLayoutEffect(() => {
@@ -217,6 +161,12 @@ export default function Experience() {
         <SectionHeading number="02" title="Experience" />
       </RevealOnScroll>
 
+      {isApiView ? (
+        <ApiJsonPanel
+          endpoint="/api/experience"
+          payload={getExperiencePayload()}
+        />
+      ) : (
       <div ref={timelineRef} className="relative pl-8">
         <div
           className="absolute left-[7px] w-px bg-border/80"
@@ -230,7 +180,7 @@ export default function Experience() {
         />
 
         <ul className="flex flex-col">
-          {experiences.map((entry, index) => (
+          {experienceEntries.map((entry, index) => (
             <li
               key={entry.id}
               className="relative pb-12 last:pb-0"
@@ -256,8 +206,8 @@ export default function Experience() {
                     <span className="font-mono text-xs tracking-wide text-accent sm:text-sm">
                       {entry.dates}
                     </span>
-                    {entry.papers && (
-                      <ExperiencePaperMenu papers={entry.papers} />
+                    {entry.links && (
+                      <ExperiencePaperMenu papers={entry.links} />
                     )}
                   </div>
                   <p className="mb-2 font-mono text-sm text-muted">
@@ -272,6 +222,7 @@ export default function Experience() {
           ))}
         </ul>
       </div>
+      )}
     </section>
   );
 }
