@@ -4,6 +4,7 @@ import {
   Calculator,
   ChartLine,
   FileText,
+  FlaskConical,
   Spade,
   TrendingUp,
   type LucideIcon,
@@ -25,6 +26,7 @@ const projectIcons: Record<ProjectIconKey, LucideIcon> = {
   trendingUp: TrendingUp,
   spade: Spade,
   chartLine: ChartLine,
+  flask: FlaskConical,
 };
 
 function ExternalLinkIcon() {

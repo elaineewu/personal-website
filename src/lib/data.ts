@@ -72,7 +72,8 @@ export type ProjectIconKey =
   | "calculator"
   | "trendingUp"
   | "spade"
-  | "chartLine";
+  | "chartLine"
+  | "flask";
 
 export type ProjectExtraLink = {
   label: string;
@@ -90,6 +91,15 @@ export type ProjectEntry = {
 };
 
 export const projectEntries: ProjectEntry[] = [
+  {
+    title: "Stress-Testing the Constants in 101 Formulaic Alphas",
+    description:
+      "The six-digit constants in 13 of WorldQuant's published alphas ranked no better than their integer neighbors (49th percentile) and beat random constants only at chance on S&P 500 data, and choosing windows by in-sample IC hurt out-of-sample IC. Only Alpha #75 held up.",
+    tags: ["Python", "pandas", "Alpha Research", "Overfitting"],
+    icon: "flask",
+    projectPageUrl: "/projects/alpha101-constants",
+    githubUrl: "https://github.com/elaineewu/personal-website/tree/main/research/alpha101",
+  },
   {
     title: "Black-Scholes vs. Monte Carlo: Options Calculator",
     description:

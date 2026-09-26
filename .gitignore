@@ -46,3 +46,9 @@ src/data/blackjack-sim/results-1000.json
 src/data/blackjack-sim/results-10000.json
 src/data/blackjack-sim/results-100000.json
 src/data/blackjack-sim/results-1000000.json
+
+# alpha101 research data
+research/alpha101/*.csv
+research/alpha101/results.json
+research/alpha101/web-results.json
+__pycache__/
