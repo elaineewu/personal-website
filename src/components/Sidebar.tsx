@@ -15,6 +15,7 @@ const navItems = [
   { label: "Projects", href: "#projects" },
   { label: "Research", href: "#research" },
   { label: "Contact", href: "#contact" },
+  { label: "Resume", href: "/resume" },
 ];
 
 export default function Sidebar() {

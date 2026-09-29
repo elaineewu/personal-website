@@ -194,6 +194,10 @@ export const apiEndpointCatalog = [
     description: "Research papers with status and PDF links.",
   },
   {
+    path: "/api/resume",
+    description: "Full resume: education, experience, projects, skills, and PDF link.",
+  },
+  {
     path: "/api/contact",
     description: "Email, GitHub, and LinkedIn.",
   },

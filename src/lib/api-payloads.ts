@@ -7,6 +7,13 @@ import {
   researchEntries,
   siteHero,
 } from "./data";
+import {
+  resumeEducation,
+  resumeExperience,
+  resumePdfUrl,
+  resumeProjects,
+  resumeSkills,
+} from "./resume";
 
 export function getApiIndexPayload() {
   return {
@@ -66,6 +73,51 @@ export function getResearchPayload() {
       description: paper.description,
       pdfUrl: paper.pdfUrl,
     })),
+  };
+}
+
+function toCamelCase(label: string) {
+  return label
+    .toLowerCase()
+    .replace(/[^a-z0-9]+(\w)/g, (_, c: string) => c.toUpperCase());
+}
+
+export function getResumePayload() {
+  return {
+    section: "Resume",
+    name: siteHero.name,
+    pdfUrl: resumePdfUrl,
+    education: resumeEducation.map((entry) => ({
+      school: entry.school,
+      degree: entry.degree,
+      dates: entry.dates,
+      ...Object.fromEntries(
+        entry.details.map(({ label, value }) => [
+          toCamelCase(label),
+          value,
+        ]),
+      ),
+    })),
+    experience: resumeExperience.map((entry) => ({
+      organization: entry.organization,
+      role: entry.role,
+      dates: entry.dates,
+      highlights: entry.bullets,
+    })),
+    projects: resumeProjects.map((project) => ({
+      name: project.name,
+      focus: project.focus,
+      highlights: project.bullets,
+      ...(project.projectPageUrl
+        ? { projectPageUrl: project.projectPageUrl }
+        : {}),
+    })),
+    skills: Object.fromEntries(
+      resumeSkills.map(({ label, items }) => [
+        toCamelCase(label),
+        items,
+      ]),
+    ),
   };
 }
 
