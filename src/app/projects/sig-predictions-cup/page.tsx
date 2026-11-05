@@ -27,7 +27,7 @@ const STATS = [
   {
     label: "Leaderboard",
     value: `#${results.rankNearClose}`,
-    sub: `up from #${results.rankOct7} of ${formatSusq(results.participantsOct7)} on Oct 7`,
+    sub: `of ${formatSusq(results.participantsNearClose)} traders, up from #${results.rankOct7} of ${formatSusq(results.participantsOct7)} on Oct 7`,
   },
   { label: "Worst drawdown", value: "≈6%", sub: "Nov 2, recovered within a day" },
 ];

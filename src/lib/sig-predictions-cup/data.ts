@@ -37,6 +37,7 @@ export const results = {
   positions: 47,
   trades: 692,
   rankNearClose: 368,
+  participantsNearClose: 1_969,
   rankOct7: 845,
   participantsOct7: 1_277,
   drawdownLow: 99_043,

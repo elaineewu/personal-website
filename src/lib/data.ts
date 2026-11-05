@@ -95,7 +95,7 @@ export const projectEntries: ProjectEntry[] = [
   {
     title: "Trading the Midterms: SIG Predictions Cup Bot",
     description:
-      "My bot closed the SIG Predictions Cup up 10.8% over 692 trades and finished 368th, with an edge similar to the leaders, who simply traded 50 to 180x their capital.",
+      "My bot closed the SIG Predictions Cup up 10.8% over 692 trades and finished 368th of 1,969 traders, with an edge similar to the leaders, who simply traded 50 to 180x their capital.",
     tags: ["Python", "Prediction Markets", "Arbitrage", "Automated Trading"],
     icon: "bot",
     projectPageUrl: "/projects/sig-predictions-cup",
