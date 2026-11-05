@@ -15,7 +15,7 @@ export type MonteCarloResult = {
 function hashInputs(inputs: BlackScholesInputs): number {
   const { S, K, T, r, sigma, type } = inputs;
   const typeBit = type === "call" ? 1 : 0;
-  let seed =
+  const seed =
     Math.imul(Math.floor(S * 1000), 2654435761) ^
     Math.imul(Math.floor(K * 1000), 1597334677) ^
     Math.imul(Math.floor(T * 10000), 2246822519) ^

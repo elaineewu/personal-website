@@ -73,7 +73,8 @@ export type ProjectIconKey =
   | "trendingUp"
   | "spade"
   | "chartLine"
-  | "flask";
+  | "flask"
+  | "bot";
 
 export type ProjectExtraLink = {
   label: string;
@@ -91,6 +92,14 @@ export type ProjectEntry = {
 };
 
 export const projectEntries: ProjectEntry[] = [
+  {
+    title: "Trading the Midterms: SIG Predictions Cup Bot",
+    description:
+      "My bot closed the SIG Predictions Cup up 10.8% over 692 trades and finished 368th, with an edge similar to the leaders, who simply traded 50 to 180x their capital.",
+    tags: ["Python", "Prediction Markets", "Arbitrage", "Automated Trading"],
+    icon: "bot",
+    projectPageUrl: "/projects/sig-predictions-cup",
+  },
   {
     title: "Stress-Testing the Constants in 101 Formulaic Alphas",
     description:

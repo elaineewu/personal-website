@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  Bot,
   Calculator,
   ChartLine,
   FileText,
@@ -27,6 +28,7 @@ const projectIcons: Record<ProjectIconKey, LucideIcon> = {
   spade: Spade,
   chartLine: ChartLine,
   flask: FlaskConical,
+  bot: Bot,
 };
 
 function ExternalLinkIcon() {
